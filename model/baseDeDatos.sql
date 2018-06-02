@@ -2,6 +2,18 @@ CREATE DATABASE mundial2018;
 
 USE mundial2018;
 
+
+CREATE TABLE grupo(
+    id INT AUTO_INCREMENT,
+    nombre_grupo VARCHAR (45),
+    PRIMARY KEY(id)
+
+    
+);
+
+INSERT INTO grupo VALUES (NULL,'Grupo A');
+
+
 CREATE TABLE equipo(
     id INT AUTO_INCREMENT,
     nombre VARCHAR (20),
@@ -10,60 +22,67 @@ CREATE TABLE equipo(
     nGolesAFavor INT,
     nGolesEnContra INT,
     diferenciaDeGoles INT,
+    grupo_id INT,
+    FOREIGN KEY (grupo_id) REFERENCES grupo(id),
     PRIMARY KEY(id)
 
 );
 
 
-INSERT INTO equipo VALUES (NULL, 'Egipto','../imagenes/Egipto.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Marruecos','../imagenes/Marruecos.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Nigeria','../imagenes/Nigeria.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Senegal','../imagenes/Senegal.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Tunez','../imagenes/Tunez.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Arabia Saudi','../imagenes/ArabiaSaudi.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Australia','../imagenes/Australia.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Japon','../imagenes/Japon.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Republica de Corea','../imagenes/Corea.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Iran','../imagenes/Iran.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Alemania','../imagenes/Alemania.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Belgica','../imagenes/Belgica.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Croacia','../imagenes/Croacia.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Dinamarca','../imagenes/Dinamarca.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Espania','../imagenes/Espania.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Francia','../imagenes/Francia.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Inglaterra','../imagenes/Inglaterra.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Islandia','../imagenes/Islandia.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Polonia','../imagenes/Polonia.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Portugal','../imagenes/Portugal.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Rusia','../imagenes/Rusia.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Serbia','../imagenes/Serbia.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Suecia','../imagenes/Suecia.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Suiza','../imagenes/Suiza.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Costa Rica','../imagenes/CostaRica.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Mexico','../imagenes/Mexico.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Panama','../imagenes/Panama.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Argentina','../imagenes/Argentina.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Brasil','../imagenes/Brasil.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Colombia','../imagenes/Colombia.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Peru','../imagenes/Peru.png',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Uruguay','../imagenes/Uruguay.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Egipto','../imagenes/Egipto.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Marruecos','../imagenes/Marruecos.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Nigeria','../imagenes/Nigeria.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Senegal','../imagenes/Senegal.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Tunez','../imagenes/Tunez.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Arabia Saudi','../imagenes/ArabiaSaudi.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Australia','../imagenes/Australia.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Japon','../imagenes/Japon.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Republica de Corea','../imagenes/Corea.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Iran','../imagenes/Iran.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Alemania','../imagenes/Alemania.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Belgica','../imagenes/Belgica.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Croacia','../imagenes/Croacia.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Dinamarca','../imagenes/Dinamarca.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Espania','../imagenes/Espania.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Francia','../imagenes/Francia.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Inglaterra','../imagenes/Inglaterra.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Islandia','../imagenes/Islandia.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Polonia','../imagenes/Polonia.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Portugal','../imagenes/Portugal.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Rusia','../imagenes/Rusia.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Serbia','../imagenes/Serbia.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Suecia','../imagenes/Suecia.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Suiza','../imagenes/Suiza.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Costa Rica','../imagenes/CostaRica.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Mexico','../imagenes/Mexico.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Panama','../imagenes/Panama.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Argentina','../imagenes/Argentina.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Brasil','../imagenes/Brasil.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Colombia','../imagenes/Colombia.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Peru','../imagenes/Peru.png',0,0,0,0,1);
+INSERT INTO equipo VALUES (NULL, 'Uruguay','../imagenes/Uruguay.png',0,0,0,0,1);
 
-TRUNCATE TABLE equipo;
+
+CREATE TABLE tipo_partido(
+    id INT AUTO_INCREMENT,
+    relevancia VARCHAR (45),
+    PRIMARY KEY(id)
+);
+
 
 CREATE TABLE partido(
     id INT AUTO_INCREMENT,
+    fecha DATE,
+    equipo_visita INT,
+    equipo_local INT,
+    tipo_partido_id INT,
+    FOREIGN KEY (equipo_visita) REFERENCES equipo (id),
+    FOREIGN KEY (equipo_local) REFERENCES equipo (id),
+    FOREIGN KEY (tipo_partido_id) REFERENCES tipo_partido (id),
     PRIMARY KEY(id)
 );
 
 
-CREATE TABLE equipo_partido(
-    id INT AUTO_INCREMENT,
-    partido_fk INT,
-    equipo_fk INT,
-    FOREIGN KEY (partido_fk) REFERENCES partido(id),
-    FOREIGN KEY (equipo_fk) REFERENCES equipo(id),
-    PRIMARY KEY(id)
-);
 
 
 CREATE TABLE tipoResultado(
@@ -81,74 +100,14 @@ CREATE TABLE resultado(
     id INT AUTO_INCREMENT,
     fk_partido INT,
     fk_tipoResultado INT,
-    ganador INT,
-    perdedor INT,
-    FOREIGN KEY (ganador) REFERENCES equipo(id),
-    FOREIGN KEY (perdedor) REFERENCES equipo(id),
+    duracion INT,
+    stats VARCHAR(45),
     FOREIGN KEY (fk_partido) REFERENCES partido(id),
     FOREIGN KEY (fk_tipoResultado) REFERENCES tipoResultado(id),
     PRIMARY KEY(id)
 
 );
 
-
-
-
-CREATE TABLE grupoOctavosDeFinal(
-    id INT AUTO_INCREMENT,
-    nombreGrupo VARCHAR(50),
-    primerEquipoId INT,
-    segundoEquipoId INT,
-    tercerEquipoId INT,
-    cuartoEquipoId INT,
-    FOREIGN KEY (primerEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (segundoEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (tercerEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (cuartoEquipoId) REFERENCES equipo(id), 
-    PRIMARY KEY(id)
-);
-
-
-CREATE TABLE grupoCuartosDeFinal(
-    id INT AUTO_INCREMENT,
-    nombreGrupo VARCHAR(50),
-    primerEquipoId INT,
-    segundoEquipoId INT,
-    tercerEquipoId INT,
-    cuartoEquipoId INT,
-    FOREIGN KEY (primerEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (segundoEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (tercerEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (cuartoEquipoId) REFERENCES equipo(id), 
-    PRIMARY KEY(id)
-
-);
-
-CREATE TABLE grupoSemiFinal(
-    id INT AUTO_INCREMENT,
-    nombreGrupo VARCHAR(50),
-    primerEquipoId INT,
-    segundoEquipoId INT,
-    tercerEquipoId INT,
-    cuartoEquipoId INT,
-    FOREIGN KEY (primerEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (segundoEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (tercerEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (cuartoEquipoId) REFERENCES equipo(id), 
-    PRIMARY KEY(id)
-
-);
-
-CREATE TABLE Final(
-    id INT AUTO_INCREMENT,
-    nombreGrupo VARCHAR(50),
-    primerEquipoId INT,
-    segundoEquipoId INT,
-    FOREIGN KEY (primerEquipoId) REFERENCES equipo(id), 
-    FOREIGN KEY (segundoEquipoId) REFERENCES equipo(id),
-    PRIMARY KEY(id)
-
-);
 
 DROP DATABASE mundial2018;
 

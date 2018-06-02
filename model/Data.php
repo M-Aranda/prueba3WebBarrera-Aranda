@@ -42,9 +42,10 @@ class Data{
             $nGolesAFavor=$reg[4];
             $nGolesEnContra=$reg[5];
             $diferenciaDeGoles=$reg[6];
+            $grupo_id=$reg[7];
 
 
-            $equipo = new Equipo($id,$nombre,$insignia,$puntaje,$nGolesAFavor,$nGolesEnContra,$diferenciaDeGoles);
+            $equipo = new Equipo($id,$nombre,$insignia,$puntaje,$nGolesAFavor,$nGolesEnContra,$diferenciaDeGoles,$grupo_id);
             
 
             $listaDeEquipos[]=$equipo;

@@ -10,8 +10,9 @@ class Equipo{
     private $nGolesAFavor;
     private $nGolesEnContra;
     private $diferenciaDeGoles;
+    private $grupo_id;
 
-    public function __construct($id,$nombre,$insignia,$puntaje,$nGolesAFavor,$nGolesEnContra,$diferenciaDeGoles){
+    public function __construct($id,$nombre,$insignia,$puntaje,$nGolesAFavor,$nGolesEnContra,$diferenciaDeGoles,$grupo_id){
         $this->id= $id;
         $this->nombre= $nombre;
         $this->insignia= $insignia;
@@ -19,6 +20,7 @@ class Equipo{
         $this->nGolesAFavor= $nGolesAFavor;
         $this->nGolesEnContra= $nGolesEnContra;
         $this->diferenciaDeGoles= $diferenciaDeGoles;
+        $this->grupo_id= $grupo_id;
     
     }
 
@@ -66,6 +68,10 @@ class Equipo{
         return $this->diferenciaDeGoles;
     }
 
+    public function getGrupo_id(){
+        
+        return $this->grupo_id;
+    }
 
     
 
@@ -100,5 +106,10 @@ class Equipo{
         $this->diferenciaDeGoles= $diferenciaDeGoles;
     }
 
+    
+    public function setGrupo_id($grupo_id){
+        
+        $this->grupo_id=$grupo_id;
+    }
 
 }
