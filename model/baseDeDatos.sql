@@ -5,7 +5,7 @@ USE mundial2018;
 CREATE TABLE equipo(
     id INT AUTO_INCREMENT,
     nombre VARCHAR (20),
-    insignia VARCHAR (50), /*Debiese ser un varchar que diga donde esta la ruta*/
+    insignia VARCHAR (2000), /*Debiese ser un varchar que diga donde esta la ruta*/
     puntaje INT,
     nGolesAFavor INT,
     nGolesEnContra INT,
@@ -15,39 +15,40 @@ CREATE TABLE equipo(
 );
 
 
-INSERT INTO equipo VALUES (NULL, 'Egipto','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Marruecos','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Nigeria','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Senegal','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Tunez','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Arabia Saudi','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Australia','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Japon','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Republica de Corea','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Iran','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Alemania','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Belgica','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Croacia','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Dinamarca','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Espania','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Francia','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Inglaterra','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Islandia','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Polonia','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Portugal','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Rusia','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Serbia','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Suecia','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Suiza','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Costa Rica','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Mexico','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Panama','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Argentina','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Brasil','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Colombia','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Peru','insig',0,0,0,0);
-INSERT INTO equipo VALUES (NULL, 'Uruguay','insig',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Egipto','../imagenes/Egipto.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Marruecos','../imagenes/Marruecos.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Nigeria','../imagenes/Nigeria.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Senegal','../imagenes/Senegal.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Tunez','../imagenes/Tunez.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Arabia Saudi','../imagenes/ArabiaSaudi.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Australia','../imagenes/Australia.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Japon','../imagenes/Japon.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Republica de Corea','../imagenes/Corea.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Iran','../imagenes/Iran.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Alemania','../imagenes/Alemania.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Belgica','../imagenes/Belgica.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Croacia','../imagenes/Croacia.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Dinamarca','../imagenes/Dinamarca.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Espania','../imagenes/Espania.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Francia','../imagenes/Francia.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Inglaterra','../imagenes/Inglaterra.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Islandia','../imagenes/Islandia.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Polonia','../imagenes/Polonia.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Portugal','../imagenes/Portugal.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Rusia','../imagenes/Rusia.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Serbia','../imagenes/Serbia.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Suecia','../imagenes/Suecia.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Suiza','../imagenes/Suiza.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Costa Rica','../imagenes/CostaRica.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Mexico','../imagenes/Mexico.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Panama','../imagenes/Panama.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Argentina','../imagenes/Argentina.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Brasil','../imagenes/Brasil.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Colombia','../imagenes/Colombia.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Peru','../imagenes/Peru.png',0,0,0,0);
+INSERT INTO equipo VALUES (NULL, 'Uruguay','../imagenes/Uruguay.png',0,0,0,0);
 
+TRUNCATE TABLE equipo;
 
 CREATE TABLE partido(
     id INT AUTO_INCREMENT,
@@ -149,33 +150,7 @@ CREATE TABLE Final(
 
 );
 
-CREATE TABLE equiposSorteados(
-	id INT AUTO_INCREMENT,
-    fk_equipo INT,
-    FOREIGN KEY (fk_equipo) REFERENCES equipo(id),
-    PRIMARY KEY(id)
-);
-
-DELIMITER //
-CREATE PROCEDURE sortearGrupos()
-	DECLARE numeroRandom INT;
-    DECLARE primerEquipo INT;
-    DECLARE segundoEquipo INT;
-    DECLARE tercerEquipo INT;
-    DECLARE cuartoEquipo INT;
-    
-    BEGIN
-		SET numeroRandom=(ROUND((RAND() * (32-1))+1));
-        IF SELECT COUNT(*) FROM equiposSorteados==0 THEN
-        
-        INSERT INTO equiposSorteados VALUES(NULL, numeroRandom);
-        END IF
-        
-    
-    END
-
-
-DELIMITER ;
+DROP DATABASE mundial2018;
 
 /*
 3 puntos por victoria

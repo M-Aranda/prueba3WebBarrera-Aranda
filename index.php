@@ -15,11 +15,9 @@
 
 </head>
 <body>
+
+    <a href="view/sorteo.php">Comenzar</a>
     
-    <form action="#" method="post">
-    <input type="text" name="algo" id="algo" placeholder="Escriba algo :">
-    <input type="submit" value="Aceptar">
-    </form>
 
 
 </body>
