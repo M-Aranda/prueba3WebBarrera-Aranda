@@ -18,6 +18,12 @@ class Data{
 
     }
 
+    //metodo que debies actualizar id_grupo de equipos
+    public function sortear($id_grupo,$idEquipo){
+        $query="UPDATE equipo SET grupo_id=$id_grupo WHERE id=$idEquipo";
+        usarConexion($query);
+    }
+
 
     public function getEquiposDelMundial(){
         $this->con->conectar();
