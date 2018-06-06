@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ver Grupo A</title>
+    <title>Ver Grupo C</title>
 
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href=../"js/bootstrap.js">
@@ -27,7 +27,6 @@
 require_once("../model/Data.php");
 require_once("../model/Equipo.php");
 
-session_start();
 
 $id_grupo=4;
 

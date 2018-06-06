@@ -27,7 +27,6 @@
 require_once("../model/Data.php");
 require_once("../model/Equipo.php");
 
-session_start();
 
 $id_grupo=2;
 
