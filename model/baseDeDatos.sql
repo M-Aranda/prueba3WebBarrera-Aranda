@@ -109,7 +109,7 @@ CREATE TABLE resultado(
 );
 
 DELIMITER $$
-CREATE PROCEDURE sortear_equipos ()
+CREATE PROCEDURE sortear_equipos ()-- DROP PROCEDURE sortear_equipos
 BEGIN
 	DECLARE cont INT;
     DECLARE grupo_fk INT;
@@ -123,35 +123,31 @@ BEGIN
     
     INSERT INTO tmp_sort(id_equipo) SELECT e.id FROM equipo e ORDER BY RAND();
     
-    WHILE 32 > cont DO
-    
-		SET cont = (cont +1);
+    WHILE cont < 32 DO   
+		SET cont = (cont +1);        
+       case  
+           when cont <= 4 then SET grupo_fk = 2;
+           when cont <= 8 then SET grupo_fk = 3;
+           when cont <= 12 then SET grupo_fk = 4;
+           when cont <= 16 then SET grupo_fk = 5;
+           when cont <= 20 then SET grupo_fk = 6;
+           when cont <= 24 then SET grupo_fk = 7;
+           when cont <= 28 then SET grupo_fk = 8;
+           when cont <= 32 then SET grupo_fk = 9;
+        end case;      
+		
+		UPDATE equipo SET grupo_id = grupo_fk WHERE id = (SELECT id_equipo FROM tmp_sort WHERE id = cont);
         
-        IF (5 > cont) THEN
-			SET grupo_fk = 2;
-        ELSE IF (9 > cont) THEN
-			SET grupo_fk = 3;
-        ELSE IF (13 > cont) THEN
-			SET grupo_fk = 4;
-        ELSE IF (17 > cont) THEN
-			SET grupo_fk = 5;
-        ELSE IF (21 > cont) THEN
-			SET grupo_fk = 6;
-        ELSE IF (25 > cont) THEN
-			SET grupo_fk = 7;
-        ELSE IF (29 > cont) THEN
-			SET grupo_fk = 8;
-        ELSE IF (33 > cont) THEN
-			SET grupo_fk = 9;
-        END IF;
-		--  UPDATE equipo SET grupo_id = grupo_fk WHERE id = (SELECT id_equipo FROM tmp_sort WHERE id = cont);
-    END WHILE; 
+    END WHILE;
+    DROP TABLE tmp_sort;
     
  END$$
 DELIMITER ;
 
+CALL sortear_equipos;
+select * from equipo ORDER BY grupo_id;
 
-DROP DATABASE mundial2018;
+-- DROP DATABASE mundial2018;
 
 /*
 3 puntos por victoria
