@@ -1,4 +1,4 @@
-CREATE DATABASE mundial2018;
+CREATE DATABASE mundial2018;-- DROP DATABASE mundial2018
 
 USE mundial2018;
 
@@ -11,7 +11,7 @@ CREATE TABLE grupo(
     
 );
 
-INSERT INTO grupo VALUES (NULL,'Grupo A');
+INSERT INTO grupo VALUES (NULL,'No Grupo'),(NULL,'Grupo A'),(NULL,'Grupo B'),(NULL,'Grupo C'),(NULL,'Grupo D'),(NULL,'Grupo E'),(NULL,'Grupo F'),(NULL,'Grupo G'),(NULL,'Grupo H');
 
 
 CREATE TABLE equipo(
@@ -107,6 +107,48 @@ CREATE TABLE resultado(
     PRIMARY KEY(id)
 
 );
+
+DELIMITER $$
+CREATE PROCEDURE sortear_equipos ()
+BEGIN
+	DECLARE cont INT;
+    DECLARE grupo_fk INT;
+    SET cont = 0;
+    
+	CREATE TEMPORARY TABLE tmp_sort(
+		id INT AUTO_INCREMENT DEFAULT NULL,
+        id_equipo INT,
+        PRIMARY KEY(id)
+    );
+    
+    INSERT INTO tmp_sort(id_equipo) SELECT e.id FROM equipo e ORDER BY RAND();
+    
+    WHILE 32 > cont DO
+    
+		SET cont = (cont +1);
+        
+        IF (5 > cont) THEN
+			SET grupo_fk = 2;
+        ELSE IF (9 > cont) THEN
+			SET grupo_fk = 3;
+        ELSE IF (13 > cont) THEN
+			SET grupo_fk = 4;
+        ELSE IF (17 > cont) THEN
+			SET grupo_fk = 5;
+        ELSE IF (21 > cont) THEN
+			SET grupo_fk = 6;
+        ELSE IF (25 > cont) THEN
+			SET grupo_fk = 7;
+        ELSE IF (29 > cont) THEN
+			SET grupo_fk = 8;
+        ELSE IF (33 > cont) THEN
+			SET grupo_fk = 9;
+        END IF;
+		--  UPDATE equipo SET grupo_id = grupo_fk WHERE id = (SELECT id_equipo FROM tmp_sort WHERE id = cont);
+    END WHILE; 
+    
+ END$$
+DELIMITER ;
 
 
 DROP DATABASE mundial2018;
