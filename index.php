@@ -7,16 +7,29 @@
     <title>Indice</title>
 
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/estilos.css">
     <link rel="stylesheet" href="js/bootstrap.js">
-
-
-
-    
-
 </head>
 <body>
-
-    <a href="view/sorteo.php">Comenzar</a>
+<div class="claseDelDiv">
+<br>
+<br>
+<br>
+<div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
+  <div class="card-header">
+    HOLA!!
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">¡Bienvenido al simulador del Mundial de Rusia 2018!</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <img class="card-img-top" src="imagenes/paises.png" alt="Card image cap" style="width: 60%;">
+    <br>
+    <br>
+    <button href="view/sorteo.php">Sortear</a>
+  </div>
+</div>
+</div>
+    
     
 
 
