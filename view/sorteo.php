@@ -57,6 +57,14 @@ foreach ($equiposMundial as $e => $equipo) {// ciclo que muestra nombres de equi
     </form>
 
 
-    
+    <a href="grupoA.php">Ver grupo A</a>
+    <a href="grupoB.php">Ver grupo B</a>
+    <a href="grupoC.php">Ver grupo C</a>
+    <a href="grupoD.php">Ver grupo D</a>
+    <a href="grupoE.php">Ver grupo E</a>
+    <a href="grupoF.php">Ver grupo F</a>
+    <a href="grupoG.php">Ver grupo G</a>
+    <a href="grupoH.php">Ver grupo H</a>
+
 </body>
 </html>
