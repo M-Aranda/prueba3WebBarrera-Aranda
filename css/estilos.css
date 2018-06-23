@@ -2,6 +2,11 @@ body {
     background: #90aeff;
 }
 
+table  {
+    background-color: aqua;
+    
+}
+
 div.claseDelDiv{
     background-image: url("../imagenes/background.png");
     width: 100%; 

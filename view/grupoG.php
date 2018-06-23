@@ -8,9 +8,16 @@
 
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href=../"js/bootstrap.js">
+    <link rel="stylesheet" href="../css/estilos.css">
 
 </head>
 <body>
+
+
+
+<div class="claseDelDiv">
+<div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
+<div class="card-body">
 
 <table border=default>
 

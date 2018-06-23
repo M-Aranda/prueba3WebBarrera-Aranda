@@ -147,6 +147,8 @@ DELIMITER ;
 CALL sortear_equipos;
 select * from equipo ORDER BY grupo_id;
 
+
+
 -- DROP DATABASE mundial2018;
 
 /*
