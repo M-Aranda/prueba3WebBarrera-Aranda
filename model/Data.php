@@ -1,6 +1,7 @@
 <?php
 require_once("Conexion.php");
 require_once("Equipo.php");
+require_once("VersusFaseDeGrupo.php");
 
 class Data{
     private $con;
@@ -24,7 +25,33 @@ class Data{
         usarConexion($query);
     }
 
+    public function getVersusGrupo($idG){
+        $this->con->conectar();
 
+        $query="CALL mostrarVSDeUnGrupo($idG)";
+
+        $rs = $this->con->ejecutar($query);
+
+        $listadoDePartidos = array();
+        
+        while($reg = $rs->fetch_array()){
+            
+            $id=$reg[0];
+            $nombreVisita=$reg[1];
+            $insigniaVisita=$reg[2];
+            $nombreLocal=$reg[3];
+            $insigniaLocal=$reg[4];
+
+            $versus = new VersusFaseDeGrupo($id,$nombreVisita,$insigniaVisita,$nombreLocal,$insigniaLocal);
+            $listadoDePartidos[]=$versus;
+        }
+
+        
+
+        $this->con->desconectar();
+
+        return $listadoDePartidos;
+    }
 
 
     public function getEquiposGrupo($id_grupo){

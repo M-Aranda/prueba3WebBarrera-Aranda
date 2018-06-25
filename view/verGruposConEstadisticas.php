@@ -13,6 +13,9 @@
 </head>
 <body>
 
+<br>
+<a href="faseDeGruposGoles.php">Registrar goles de fase de grupos</a>
+<br>
 
 
 <div class="claseDelDiv">

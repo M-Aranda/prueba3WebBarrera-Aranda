@@ -69,19 +69,39 @@ CREATE TABLE tipo_partido(
     PRIMARY KEY(id)
 );
 
+INSERT INTO tipo_partido VALUES(NULL, 'Fase de grupo');
+INSERT INTO tipo_partido VALUES(NULL, 'Octavos de final');
+INSERT INTO tipo_partido VALUES(NULL, 'Cuartos de final');
+INSERT INTO tipo_partido VALUES(NULL, 'Semi final');
+INSERT INTO tipo_partido VALUES(NULL, 'Final');
+
+
+CREATE TABLE equipo_visita(
+	id INT AUTO_INCREMENT,
+    equipo_id INT,
+    FOREIGN KEY (equipo_id) REFERENCES equipo (id),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE equipo_local(
+	id INT AUTO_INCREMENT,
+    equipo_id INT,
+    FOREIGN KEY (equipo_id) REFERENCES equipo (id),
+    PRIMARY KEY(id)
+);
+
 
 CREATE TABLE partido(
     id INT AUTO_INCREMENT,
     fecha DATE,
-    equipo_visita INT,
-    equipo_local INT,
+	equipo_visita_fk INT,
+	equipo_local_fk INT,
     tipo_partido_id INT,
-    FOREIGN KEY (equipo_visita) REFERENCES equipo (id),
-    FOREIGN KEY (equipo_local) REFERENCES equipo (id),
+    FOREIGN KEY (equipo_visita_fk) REFERENCES equipo_visita (id),
+    FOREIGN KEY (equipo_local_fk) REFERENCES equipo_local (id),
     FOREIGN KEY (tipo_partido_id) REFERENCES tipo_partido (id),
     PRIMARY KEY(id)
 );
-
 
 
 
@@ -107,6 +127,8 @@ CREATE TABLE resultado(
     PRIMARY KEY(id)
 
 );
+
+
 
 DELIMITER $$
 CREATE PROCEDURE sortear_equipos ()-- DROP PROCEDURE sortear_equipos
@@ -145,8 +167,285 @@ BEGIN
 DELIMITER ;
 
 CALL sortear_equipos;
-select * from equipo ORDER BY grupo_id;
 
+
+
+DELIMITER $$
+CREATE PROCEDURE faseDeGruposCrearPartidosParaUnGrupo(fk_grupo INT) -- DROP PROCEDURE faseDeGruposCrearPartidosParaUnGrupo
+	BEGIN
+    DECLARE fkPrimerEquipo INT;
+    DECLARE fkSegundoEquipo INT;
+    DECLARE fkTercerEquipo INT;
+    DECLARE fkCuartoEquipo INT;
+    
+    DECLARE primerLocal INT;
+    DECLARE segundoLocal INT;
+    DECLARE tercerLocal INT;
+    DECLARE cuartoLocal INT;
+    
+	DECLARE primeraVisita INT;
+    DECLARE segundaVisita INT;
+    DECLARE terceraVisita INT;
+    DECLARE cuartaVisita INT;
+
+    /*
+	CREATE TEMPORARY TABLE tblGruposTMP(
+	id INT AUTO_INCREMENT,
+	equipo_fk INT,
+	PRIMARY KEY(id)
+    );
+    */
+    
+    SET fkPrimerEquipo=(SELECT id FROM equipo WHERE grupo_id=fk_grupo LIMIT 0,1);
+    SET fkSegundoEquipo=(SELECT id FROM equipo WHERE grupo_id=fk_grupo LIMIT 1,1);
+    SET fkTercerEquipo=(SELECT id FROM equipo WHERE grupo_id=fk_grupo LIMIT 2,1);
+    SET fkCuartoEquipo=(SELECT id FROM equipo WHERE grupo_id=fk_grupo LIMIT 3,1);
+    
+    /*
+	INSERT INTO tblGruposTMP VALUES (NULL, fkPrimerEquipo);
+    INSERT INTO tblGruposTMP VALUES (NULL, fkSegundoEquipo);
+    INSERT INTO tblGruposTMP VALUES (NULL, fkTercerEquipo);
+    INSERT INTO tblGruposTMP VALUES (NULL, fkCuartoEquipo);
+    */
+
+	INSERT INTO equipo_local VALUES(NULL,fkPrimerEquipo);
+	INSERT INTO equipo_local VALUES(NULL,fkSegundoEquipo);
+    INSERT INTO equipo_local VALUES(NULL,fkTercerEquipo);
+    INSERT INTO equipo_local VALUES(NULL,fkCuartoEquipo);
+    
+	INSERT INTO equipo_visita VALUES(NULL,fkPrimerEquipo);
+	INSERT INTO equipo_visita VALUES(NULL,fkSegundoEquipo);
+    INSERT INTO equipo_visita VALUES(NULL,fkTercerEquipo);
+    INSERT INTO equipo_visita VALUES(NULL,fkCuartoEquipo);
+
+	SET primerLocal =(SELECT equipo_local.equipo_id FROM equipo_local, equipo WHERE equipo_local.equipo_id=equipo.id AND equipo.grupo_id=fk_grupo LIMIT 0,1);
+	SET segundoLocal =(SELECT equipo_local.equipo_id FROM equipo_local, equipo WHERE equipo_local.equipo_id=equipo.id AND equipo.grupo_id=fk_grupo LIMIT 1,1);
+    SET tercerLocal =(SELECT equipo_local.equipo_id FROM equipo_local, equipo WHERE equipo_local.equipo_id=equipo.id AND equipo.grupo_id=fk_grupo LIMIT 2,1);
+    SET cuartoLocal =(SELECT equipo_local.equipo_id FROM equipo_local, equipo WHERE equipo_local.equipo_id=equipo.id AND equipo.grupo_id=fk_grupo LIMIT 3,1);
+    
+	SET primeraVisita =(SELECT equipo_visita.equipo_id FROM equipo_visita, equipo WHERE equipo_visita.equipo_id=equipo.id AND equipo.grupo_id=fk_grupo LIMIT 0,1);
+	SET segundaVisita =(SELECT equipo_visita.equipo_id FROM equipo_visita, equipo WHERE equipo_visita.equipo_id=equipo.id AND equipo.grupo_id=fk_grupo LIMIT 1,1);
+    SET terceraVisita =(SELECT equipo_visita.equipo_id FROM equipo_visita, equipo WHERE equipo_visita.equipo_id=equipo.id AND equipo.grupo_id=fk_grupo LIMIT 2,1);
+    SET cuartaVisita =(SELECT equipo_visita.equipo_id FROM equipo_visita, equipo WHERE equipo_visita.equipo_id=equipo.id AND equipo.grupo_id=fk_grupo LIMIT 3,1);
+    
+    SET FOREIGN_KEY_CHECKS=0; -- misticidad++
+    INSERT INTO partido VALUES(NULL,'2018-07-03',primeraVisita,cuartoLocal,1);
+    SET FOREIGN_KEY_CHECKS=1;
+    
+    SET FOREIGN_KEY_CHECKS=0;
+    INSERT INTO partido VALUES(NULL,'2018-07-03',segundaVisita,tercerLocal,1);
+    SET FOREIGN_KEY_CHECKS=1;
+    
+    SET FOREIGN_KEY_CHECKS=0;
+    INSERT INTO partido VALUES(NULL,'2018-07-04',primeraVisita,tercerLocal,1);
+    SET FOREIGN_KEY_CHECKS=1;
+    
+    SET FOREIGN_KEY_CHECKS=0;
+    INSERT INTO partido VALUES(NULL,'2018-07-04',segundaVisita,cuartoLocal,1);
+    SET FOREIGN_KEY_CHECKS=1;
+    
+    SET FOREIGN_KEY_CHECKS=0;
+    INSERT INTO partido VALUES(NULL,'2018-07-05',segundaVisita,primerLocal,1);
+    SET FOREIGN_KEY_CHECKS=1;
+    
+    SET FOREIGN_KEY_CHECKS=0;
+    INSERT INTO partido VALUES(NULL,'2018-07-05',terceraVisita,cuartoLocal,1);
+    SET FOREIGN_KEY_CHECKS=1;
+    
+    
+    
+   /* DROP TABLE tblGruposTMP;*/
+	END$$
+   
+   
+    
+DELIMITER ;
+
+
+
+CALL faseDeGruposCrearPartidosParaUnGrupo(2);
+CALL faseDeGruposCrearPartidosParaUnGrupo(3);
+CALL faseDeGruposCrearPartidosParaUnGrupo(4);
+CALL faseDeGruposCrearPartidosParaUnGrupo(5);
+CALL faseDeGruposCrearPartidosParaUnGrupo(6);
+CALL faseDeGruposCrearPartidosParaUnGrupo(7);
+CALL faseDeGruposCrearPartidosParaUnGrupo(8);
+CALL faseDeGruposCrearPartidosParaUnGrupo(9);
+
+
+
+DELIMITER //
+CREATE PROCEDURE mostrarVSDeUnGrupo(idDelGrupo INT) --  DROP PROCEDURE mostrarVSDeUnGrupo;
+	BEGIN
+		DECLARE idPrimerPartidoDelGrupo INT;
+        DECLARE idSegundoPartidoDelGrupo INT;
+        DECLARE idTercerPartidoDelGrupo INT;
+        DECLARE idCuartoPartidoDelGrupo INT;
+        DECLARE idQuintoPartidoDelGrupo INT;
+        DECLARE idSextoPartidoDelGrupo INT;
+        
+        DECLARE cont INT;
+        
+		
+		DECLARE idVisita INT;
+        DECLARE idLocal INT;
+        DECLARE equipoVisita INT;
+        DECLARE equipoLocal INT;
+        
+        DECLARE nomV VARCHAR (20);
+        DECLARE insVisita VARCHAR (2000);
+        DECLARE nomL VARCHAR (20);
+        DECLARE insLocal VARCHAR (2000);
+        
+        
+        
+		CREATE TEMPORARY TABLE tblVS(
+		id INT AUTO_INCREMENT,
+		nomVisita VARCHAR (20),
+        insigniaVisita VARCHAR (2000),
+        nomLocal VARCHAR (20),
+        insigniaLocal VARCHAR (2000),
+		PRIMARY KEY(id)
+		);
+			
+        IF idDelGrupo=2 THEN
+			SET idPrimerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 1 AND 6 LIMIT 0,1);
+			SET idSegundoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 1 AND 6 LIMIT 1,1);
+			SET idTercerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 1 AND 6 LIMIT 2,1);
+			SET idCuartoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 1 AND 6 LIMIT 3,1);
+			SET idQuintoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 1 AND 6 LIMIT 4,1);
+			SET idSextoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 1 AND 6 LIMIT 5,1);
+		ELSEIF idDelGrupo=3 THEN
+			SET idPrimerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 7 AND 12 LIMIT 0,1);
+			SET idSegundoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 7 AND 12 LIMIT 1,1);
+			SET idTercerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 7 AND 12 LIMIT 2,1);
+			SET idCuartoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 7 AND 12 LIMIT 3,1);
+			SET idQuintoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 7 AND 12 LIMIT 4,1);
+			SET idSextoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 7 AND 12 LIMIT 5,1);
+		ELSEIF idDelGrupo=4 THEN
+			SET idPrimerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 13 AND 18 LIMIT 0,1);
+			SET idSegundoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 13 AND 18 LIMIT 1,1);
+			SET idTercerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 13 AND 18 LIMIT 2,1);
+			SET idCuartoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 13 AND 18 LIMIT 3,1);
+			SET idQuintoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 13 AND 18 LIMIT 4,1);
+			SET idSextoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 13 AND 18 LIMIT 5,1);
+		ELSEIF idDelGrupo=5 THEN
+			SET idPrimerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 19 AND 24 LIMIT 0,1);
+			SET idSegundoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 19 AND 24 LIMIT 1,1);
+			SET idTercerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 19 AND 24 LIMIT 2,1);
+			SET idCuartoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 19 AND 24 LIMIT 3,1);
+			SET idQuintoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 19 AND 24 LIMIT 4,1);
+			SET idSextoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 19 AND 24 LIMIT 5,1);
+		ELSEIF idDelGrupo=6 THEN
+			SET idPrimerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 25 AND 30 LIMIT 0,1);
+			SET idSegundoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 25 AND 30 LIMIT 1,1);
+			SET idTercerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 25 AND 30 LIMIT 2,1);
+			SET idCuartoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 25 AND 30 LIMIT 3,1);
+			SET idQuintoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 25 AND 30 LIMIT 4,1);
+			SET idSextoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 25 AND 30 LIMIT 5,1);
+		ELSEIF idDelGrupo=7 THEN
+			SET idPrimerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 31 AND 36 LIMIT 0,1);
+			SET idSegundoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 31 AND 36 LIMIT 1,1);
+			SET idTercerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 31 AND 36 LIMIT 2,1);
+			SET idCuartoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 31 AND 36 LIMIT 3,1);
+			SET idQuintoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 31 AND 36 LIMIT 4,1);
+			SET idSextoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 31 AND 36 LIMIT 5,1);
+		ELSEIF idDelGrupo=8 THEN
+			SET idPrimerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 37 AND 42 LIMIT 0,1);
+			SET idSegundoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 37 AND 42 LIMIT 1,1);
+			SET idTercerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 37 AND 42 LIMIT 2,1);
+			SET idCuartoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 37 AND 42 LIMIT 3,1);
+			SET idQuintoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 37 AND 42 LIMIT 4,1);
+			SET idSextoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 37 AND 42 LIMIT 5,1);
+		ELSEIF idDelGrupo=9 THEN
+			SET idPrimerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 43 AND 48 LIMIT 0,1);
+			SET idSegundoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 43 AND 48 LIMIT 1,1);
+			SET idTercerPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 43 AND 48 LIMIT 2,1);
+			SET idCuartoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 43 AND 48 LIMIT 3,1);
+			SET idQuintoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 43 AND 48 LIMIT 4,1);
+			SET idSextoPartidoDelGrupo=(SELECT id FROM partido WHERE id BETWEEN 43 AND 48 LIMIT 5,1);
+		END IF;
+        
+        SET cont=0;
+        WHILE cont<6 DO
+			SET cont = (cont +1);        
+		   CASE  
+			   WHEN cont = 1 THEN 
+					SET idVisita=(SELECT equipo_visita_fk FROM partido WHERE id=idPrimerPartidoDelGrupo);
+					SET idLocal=(SELECT equipo_local_fk FROM partido WHERE id=idPrimerPartidoDelGrupo);
+					SET equipoVisita=(SELECT id FROM equipo WHERE id=idVisita);
+					SET equipoLocal=(SELECT id FROM equipo WHERE id=idLocal);
+					SET nomV=(SELECT nombre FROM equipo WHERE id=equipoVisita);
+					SET insVisita=(SELECT insignia FROM equipo WHERE id=equipoVisita);
+					SET nomL=(SELECT nombre FROM equipo WHERE id=equipoLocal);
+					SET insLocal=(SELECT insignia FROM equipo WHERE id=equipoLocal);
+					INSERT INTO tblVS VALUES (NULL,nomV, insVisita, nomL, insLocal);                    
+			   WHEN cont = 2 THEN
+					SET idVisita=(SELECT equipo_visita_fk FROM partido WHERE id=idSegundoPartidoDelGrupo);
+					SET idLocal=(SELECT equipo_local_fk FROM partido WHERE id=idSegundoPartidoDelGrupo);
+                    SET equipoVisita=(SELECT id FROM equipo WHERE id=idVisita);
+					SET equipoLocal=(SELECT id FROM equipo WHERE id=idLocal);
+					SET nomV=(SELECT nombre FROM equipo WHERE id=equipoVisita);
+					SET insVisita=(SELECT insignia FROM equipo WHERE id=equipoVisita);
+					SET nomL=(SELECT nombre FROM equipo WHERE id=equipoLocal);
+					SET insLocal=(SELECT insignia FROM equipo WHERE id=equipoLocal);
+					INSERT INTO tblVS VALUES (NULL,nomV, insVisita, nomL, insLocal); 
+			   WHEN cont = 3 THEN 
+					SET idVisita=(SELECT equipo_visita_fk FROM partido WHERE id=idTercerPartidoDelGrupo);
+					SET idLocal=(SELECT equipo_local_fk FROM partido WHERE id=idTercerPartidoDelGrupo);
+                    SET equipoVisita=(SELECT id FROM equipo WHERE id=idVisita);
+					SET equipoLocal=(SELECT id FROM equipo WHERE id=idLocal);
+					SET nomV=(SELECT nombre FROM equipo WHERE id=equipoVisita);
+					SET insVisita=(SELECT insignia FROM equipo WHERE id=equipoVisita);
+					SET nomL=(SELECT nombre FROM equipo WHERE id=equipoLocal);
+					SET insLocal=(SELECT insignia FROM equipo WHERE id=equipoLocal);
+					INSERT INTO tblVS VALUES (NULL,nomV, insVisita, nomL, insLocal); 
+			   WHEN cont = 4 THEN
+					SET idVisita=(SELECT equipo_visita_fk FROM partido WHERE id=idCuartoPartidoDelGrupo);
+					SET idLocal=(SELECT equipo_local_fk FROM partido WHERE id=idCuartoPartidoDelGrupo);
+                    SET equipoVisita=(SELECT id FROM equipo WHERE id=idVisita);
+					SET equipoLocal=(SELECT id FROM equipo WHERE id=idLocal);
+					SET nomV=(SELECT nombre FROM equipo WHERE id=equipoVisita);
+					SET insVisita=(SELECT insignia FROM equipo WHERE id=equipoVisita);
+					SET nomL=(SELECT nombre FROM equipo WHERE id=equipoLocal);
+					SET insLocal=(SELECT insignia FROM equipo WHERE id=equipoLocal);
+					INSERT INTO tblVS VALUES (NULL,nomV, insVisita, nomL, insLocal); 
+			   WHEN cont = 5 THEN 
+					SET idVisita=(SELECT equipo_visita_fk FROM partido WHERE id=idQuintoPartidoDelGrupo);
+					SET idLocal=(SELECT equipo_local_fk FROM partido WHERE id=idQuintoPartidoDelGrupo);
+                    SET equipoVisita=(SELECT id FROM equipo WHERE id=idVisita);
+					SET equipoLocal=(SELECT id FROM equipo WHERE id=idLocal);
+					SET nomV=(SELECT nombre FROM equipo WHERE id=equipoVisita);
+					SET insVisita=(SELECT insignia FROM equipo WHERE id=equipoVisita);
+					SET nomL=(SELECT nombre FROM equipo WHERE id=equipoLocal);
+					SET insLocal=(SELECT insignia FROM equipo WHERE id=equipoLocal);
+					INSERT INTO tblVS VALUES (NULL,nomV, insVisita, nomL, insLocal); 
+			   WHEN cont = 6 THEN
+					SET idVisita=(SELECT equipo_visita_fk FROM partido WHERE id=idSextoPartidoDelGrupo);
+					SET idLocal=(SELECT equipo_local_fk FROM partido WHERE id=idSextoPartidoDelGrupo);
+                    SET equipoVisita=(SELECT id FROM equipo WHERE id=idVisita);
+					SET equipoLocal=(SELECT id FROM equipo WHERE id=idLocal);
+					SET nomV=(SELECT nombre FROM equipo WHERE id=equipoVisita);
+					SET insVisita=(SELECT insignia FROM equipo WHERE id=equipoVisita);
+					SET nomL=(SELECT nombre FROM equipo WHERE id=equipoLocal);
+					SET insLocal=(SELECT insignia FROM equipo WHERE id=equipoLocal);
+					INSERT INTO tblVS VALUES (NULL,nomV, insVisita, nomL, insLocal); 
+			
+			END CASE;
+                        
+            
+        
+        END WHILE;
+   
+        SELECT * FROM tblVS;
+        DROP TABLE tblVS;
+        
+	END //
+        		
+
+DELIMITER ;
+
+CALL mostrarVSDeUnGrupo(2);
 
 
 -- DROP DATABASE mundial2018;
