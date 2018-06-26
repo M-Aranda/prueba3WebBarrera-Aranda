@@ -29,6 +29,7 @@ CREATE TABLE equipo(
 );
 
 
+
 INSERT INTO equipo VALUES (NULL, 'Egipto','../imagenes/Egipto.png',0,0,0,0,1);
 INSERT INTO equipo VALUES (NULL, 'Marruecos','../imagenes/Marruecos.png',0,0,0,0,1);
 INSERT INTO equipo VALUES (NULL, 'Nigeria','../imagenes/Nigeria.png',0,0,0,0,1);
@@ -97,6 +98,7 @@ CREATE TABLE partido(
 	equipo_visita_fk INT,
 	equipo_local_fk INT,
     tipo_partido_id INT,
+    ganador VARCHAR (20),
     FOREIGN KEY (equipo_visita_fk) REFERENCES equipo_visita (id),
     FOREIGN KEY (equipo_local_fk) REFERENCES equipo_local (id),
     FOREIGN KEY (tipo_partido_id) REFERENCES tipo_partido (id),
@@ -104,6 +106,7 @@ CREATE TABLE partido(
 );
 
 
+/*
 
 CREATE TABLE tipoResultado(
     id INT AUTO_INCREMENT,
@@ -128,7 +131,7 @@ CREATE TABLE resultado(
 
 );
 
-
+*/
 
 DELIMITER $$
 CREATE PROCEDURE sortear_equipos ()-- DROP PROCEDURE sortear_equipos
@@ -229,27 +232,27 @@ CREATE PROCEDURE faseDeGruposCrearPartidosParaUnGrupo(fk_grupo INT) -- DROP PROC
     SET cuartaVisita =(SELECT equipo_visita.equipo_id FROM equipo_visita, equipo WHERE equipo_visita.equipo_id=equipo.id AND equipo.grupo_id=fk_grupo LIMIT 3,1);
     
     SET FOREIGN_KEY_CHECKS=0; -- misticidad++
-    INSERT INTO partido VALUES(NULL,'2018-07-03',primeraVisita,cuartoLocal,1);
+    INSERT INTO partido VALUES(NULL,'2018-07-03',primeraVisita,cuartoLocal,1,'No');
     SET FOREIGN_KEY_CHECKS=1;
     
     SET FOREIGN_KEY_CHECKS=0;
-    INSERT INTO partido VALUES(NULL,'2018-07-03',segundaVisita,tercerLocal,1);
+    INSERT INTO partido VALUES(NULL,'2018-07-03',segundaVisita,tercerLocal,1,'No');
     SET FOREIGN_KEY_CHECKS=1;
     
     SET FOREIGN_KEY_CHECKS=0;
-    INSERT INTO partido VALUES(NULL,'2018-07-04',primeraVisita,tercerLocal,1);
+    INSERT INTO partido VALUES(NULL,'2018-07-04',primeraVisita,tercerLocal,1,'No');
     SET FOREIGN_KEY_CHECKS=1;
     
     SET FOREIGN_KEY_CHECKS=0;
-    INSERT INTO partido VALUES(NULL,'2018-07-04',segundaVisita,cuartoLocal,1);
+    INSERT INTO partido VALUES(NULL,'2018-07-04',segundaVisita,cuartoLocal,1,'No');
     SET FOREIGN_KEY_CHECKS=1;
     
     SET FOREIGN_KEY_CHECKS=0;
-    INSERT INTO partido VALUES(NULL,'2018-07-05',segundaVisita,primerLocal,1);
+    INSERT INTO partido VALUES(NULL,'2018-07-05',segundaVisita,primerLocal,1,'No');
     SET FOREIGN_KEY_CHECKS=1;
     
     SET FOREIGN_KEY_CHECKS=0;
-    INSERT INTO partido VALUES(NULL,'2018-07-05',terceraVisita,cuartoLocal,1);
+    INSERT INTO partido VALUES(NULL,'2018-07-05',terceraVisita,cuartoLocal,1,'No');
     SET FOREIGN_KEY_CHECKS=1;
     
     
@@ -445,7 +448,141 @@ CREATE PROCEDURE mostrarVSDeUnGrupo(idDelGrupo INT) --  DROP PROCEDURE mostrarVS
 
 DELIMITER ;
 
-CALL mostrarVSDeUnGrupo(2);
+
+DELIMITER //
+
+CREATE PROCEDURE actualizarPuntajeYGanadorDePartido (idDelPartido INT, golesVisita INT, golesLocal INT) -- DROP PROCEDURE actualizarPuntajeYGanadorDePartido;
+	BEGIN
+		DECLARE idVisita INT;
+        DECLARE idLocal INT;
+        DECLARE nombreGanador VARCHAR (20);
+        
+        DECLARE puntajeVisita INT;
+        DECLARE putajeLocal INT;
+        
+        SET idVisita=(SELECT equipo.id FROM equipo, equipo_visita, partido WHERE 
+			partido.equipo_visita_fk=equipo_visita.id AND equipo_visita.id=equipo.id AND partido.id=idDelPartido);
+            
+        SET idLocal=(SELECT equipo.id FROM equipo, equipo_local, partido WHERE 
+			partido.equipo_local_fk=equipo_local.id AND equipo_local.id=equipo.id AND partido.id=idDelPartido);    
+        
+        SET puntajeVisita=(SELECT puntaje FROM equipo WHERE id=idVisita);
+        SET putajeLocal=(SELECT puntaje FROM equipo WHERE id=idLocal);
+        
+        
+        SET	nombreGanador='Empate';
+        
+        
+		
+        IF golesVisita=golesLocal THEN
+			UPDATE partido SET ganador=nombreGanador WHERE id=idDelPartido;
+			UPDATE equipo SET puntaje=puntajeVisita+1 WHERE id=idVisita;
+			UPDATE equipo SET puntaje=putajeLocal+1 WHERE id=idLocal;
+		ELSEIF golesVisita>golesLocal THEN
+			SET nombreGanador=(SELECT nombre FROM equipo WHERE id=idVisita);
+			UPDATE partido SET ganador=nombreGanador WHERE id=idDelPartido;
+			UPDATE equipo SET puntaje=puntajeVisita+3 WHERE id=idVisita;
+		ELSEIF golesVisita<golesLocal THEN
+			SET nombreGanador=(SELECT nombre FROM equipo WHERE id=idLocal);
+			UPDATE partido SET ganador=nombreGanador WHERE id=idDelPartido;
+			UPDATE equipo SET puntaje=putajeLocal+3 WHERE id=idLocal;
+		END IF;
+        			
+		
+    END //
+
+DELIMITER ;
+
+
+
+DELIMITER //
+
+CREATE PROCEDURE actualizarDiferenciaDeGoles (idDelEquipo INT) -- DROP PROCEDURE actualizarDiferenciaDeGoles;
+	BEGIN
+		DECLARE golesAFavor INT;
+        DECLARE golesEnContra INT;
+
+			SET golesAFavor=(SELECT nGolesAFavor FROM equipo WHERE id = idDelEquipo);
+			SET golesEnContra=(SELECT nGolesEnContra FROM equipo WHERE id = idDelEquipo);
+			
+			UPDATE equipo SET diferenciaDeGoles=(golesAFavor-golesEnContra) WHERE id=idDelEquipo;
+            
+            
+    END //
+
+DELIMITER ;
+
+
+
+-- Este procedimiento actualiza los goles del equipo visitante
+DELIMITER //
+CREATE PROCEDURE actualizarGolesEquipoVisita(idPartido INT, golesAFavor INT, golesEnContra INT) -- DROP PROCEDURE actualizarGolesEquipoVisita;
+	BEGIN
+
+    DECLARE golesF INT;
+    DECLARE golesC INT;
+    DECLARE idEquipo INT;    
+    DECLARE idDELPartido INT;
+    DECLARE gF INT;
+    DECLARE gC INT;
+    
+    SET idDELPartido=idPartido;
+    SET gF=golesAFavor;
+    SET gC=golesEnContra;
+    
+    SET idEquipo=(SELECT equipo.id FROM equipo, equipo_visita, partido WHERE 
+    partido.equipo_visita_fk=equipo_visita.id AND equipo_visita.id=equipo.id AND partido.id=idPartido);
+    
+    
+    
+    SET golesF=(SELECT nGolesAFavor FROM equipo WHERE id=idEquipo)+golesAFavor; 
+    SET golesC=(SELECT nGolesEnContra FROM equipo WHERE id=idEquipo)+golesEnContra; 
+    
+    UPDATE equipo SET nGolesAFavor=golesF, nGolesEnContra=golesC
+    WHERE id=idEquipo;
+    
+    CALL actualizarDiferenciaDeGoles(idEquipo);
+    CALL actualizarPuntajeYGanadorDePartido(idDELPartido,gF,gC);
+
+    
+    END //
+
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE actualizarGolesEquipoLocal(idPartido INT, golesAFavor INT, golesEnContra INT) -- DROP PROCEDURE actualizarGolesEquipoLocal;
+	BEGIN
+
+    DECLARE golesF INT;
+    DECLARE golesC INT;
+    DECLARE idEquipo INT;
+    
+    
+    SET idEquipo=(SELECT equipo.id FROM equipo, equipo_local, partido WHERE 
+    partido.equipo_local_fk=equipo_local.id AND equipo_local.id=equipo.id AND partido.id=idPartido);
+    
+    SET golesF=(SELECT nGolesAFavor FROM equipo WHERE id=idEquipo)+golesAFavor; 
+    SET golesC=(SELECT nGolesEnContra FROM equipo WHERE id=idEquipo)+golesEnContra; 
+    
+    UPDATE equipo SET nGolesAFavor=golesF, nGolesEnContra=golesC
+    WHERE id=idEquipo;
+    
+
+    
+    END //
+
+DELIMITER ;
+
+
+
+
+CALL actualizarGolesEquipoVisita(2,2,2);
+CALL actualizarGolesEquipoLocal(1,1,3);
+
+SELECT * FROM partido;
+
+SELECT * FROM equipo;
 
 
 -- DROP DATABASE mundial2018;

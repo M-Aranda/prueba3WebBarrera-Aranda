@@ -43,16 +43,16 @@ foreach ($idsDeGrupos as $n) {
     echo "<th>Equipo visitante</th>";
     echo "<th>Contra</th>";
     echo "<th>Equipo local</th>";
-    echo "<th>Goles visitante</th>";
+    echo "<th>Goles local</th>";
     echo "</tr>";
 
         foreach ($versus as $v) {
 
-            echo '<td><input type="text" name="goles['.$v->getNombreVisita().",".$v->getId().']" placeholder="goles visitante" required/></td>';
+            echo '<td><input type="text" name="goles['.$v->getNombreVisita().",".$v->getId().']" placeholder="goles visitante" /></td>';
             echo "<td><img src=".$v->getInsigniaVisita()."> &#160".$v->getNombreVisita()."</td>";
             echo "<td>VS</td>";
             echo "<td><img src=".$v->getInsigniaLocal()."> &#160".$v->getNombreLocal()."</td>";
-            echo '<td><input type="text" name="goles['.$v->getNombreLocal().",".$v->getId().']"  placeholder="goles local" required /></td>';
+            echo '<td><input type="text" name="goles['.$v->getNombreLocal().",".$v->getId().']"  placeholder="goles local"  /></td>';
             echo "</tr></tr>";
         
 

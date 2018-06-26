@@ -19,12 +19,19 @@ class Data{
 
     }
 
-    //metodo que debiese actualizar id_grupo de equipos, pero creo que no se necesuta porque se sortea en bd
-    public function sortear($id_grupo,$idEquipo){
-        $query="UPDATE equipo SET grupo_id=$id_grupo WHERE id=$idEquipo";
-        usarConexion($query);
+    // primer gol es visita, segundo es local
+    public function actualizarGolesVisita($idPartido, $golesVisita, $golesLocal){
+        $query="CALL actualizarGolesEquipoVisita($idPartido,$golesVisita,$golesLocal)";
+        $this->usarConexion($query);
     }
 
+        // primer gol es local, segundo es visita
+    public function actualizarGolesLocal($idPartido, $golesLocal, $golesVisita){
+        $query="CALL actualizarGolesEquipoLocal($idPartido,$golesVisita,$golesLocal)";
+        $this->usarConexion($query);
+    }
+
+    
     public function getVersusGrupo($idG){
         $this->con->conectar();
 
