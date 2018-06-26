@@ -9,7 +9,7 @@ $goles=$_POST['goles'];
 
 $j=1;
 
-for ($i=0; $i < 48; $i+=2) { 
+for ($i=0; $i < 96; $i+=2) { 
     $golesVisita=array_values($goles)[$i];
     $golesLocal=array_values($goles)[$i+1];
 

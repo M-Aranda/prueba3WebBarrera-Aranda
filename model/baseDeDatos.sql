@@ -506,7 +506,7 @@ CREATE PROCEDURE actualizarDiferenciaDeGoles (idDelEquipo INT) -- DROP PROCEDURE
 			SET golesEnContra=(SELECT nGolesEnContra FROM equipo WHERE id = idDelEquipo);
 			
 			UPDATE equipo SET diferenciaDeGoles=(golesAFavor-golesEnContra) WHERE id=idDelEquipo;
-            
+
             
     END //
 
@@ -558,6 +558,14 @@ CREATE PROCEDURE actualizarGolesEquipoLocal(idPartido INT, golesAFavor INT, gole
     DECLARE golesC INT;
     DECLARE idEquipo INT;
     
+	DECLARE idDELPartido INT;
+    DECLARE gF INT;
+    DECLARE gC INT;
+    
+    SET idDELPartido=idPartido;
+    SET gF=golesAFavor;
+    SET gC=golesEnContra;
+    
     
     SET idEquipo=(SELECT equipo.id FROM equipo, equipo_local, partido WHERE 
     partido.equipo_local_fk=equipo_local.id AND equipo_local.id=equipo.id AND partido.id=idPartido);
@@ -568,8 +576,10 @@ CREATE PROCEDURE actualizarGolesEquipoLocal(idPartido INT, golesAFavor INT, gole
     UPDATE equipo SET nGolesAFavor=golesF, nGolesEnContra=golesC
     WHERE id=idEquipo;
     
+	CALL actualizarDiferenciaDeGoles(idEquipo);
+ -- CALL actualizarPuntajeYGanadorDePartido(idDELPartido,gF,gC);
 
-    
+		
     END //
 
 DELIMITER ;
@@ -577,8 +587,8 @@ DELIMITER ;
 
 
 
-CALL actualizarGolesEquipoVisita(2,2,2);
-CALL actualizarGolesEquipoLocal(1,1,3);
+CALL actualizarGolesEquipoVisita(3,1,2);
+CALL actualizarGolesEquipoLocal(3,2,1);
 
 SELECT * FROM partido;
 
