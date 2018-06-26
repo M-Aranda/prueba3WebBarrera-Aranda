@@ -584,8 +584,57 @@ CREATE PROCEDURE actualizarGolesEquipoLocal(idPartido INT, golesAFavor INT, gole
 
 DELIMITER ;
 
+DELIMITER //
 
-
+CREATE PROCEDURE determinarQuienAvanzaAOctavos(idGrupo INT) -- Tengo dudas de como determinar esto...
+	BEGIN
+		DECLARE idEquipo1 INT;
+        DECLARE idEquipo2 INT;
+        DECLARE idEquipo3 INT;
+        DECLARE idEquipo4 INT;
+        
+        DECLARE puntajeEquipo1 INT;
+        DECLARE puntajeEquipo2 INT;
+        DECLARE puntajeEquipo3 INT;
+        DECLARE puntajeEquipo4 INT;
+        
+        DECLARE difGolesEquipo1 INT;
+        DECLARE difGolesEquipo2 INT;
+        DECLARE difGolesEquipo3 INT;
+        DECLARE difGolesEquipo4 INT;
+        
+        DECLARE golesMarcadosEquipo1 INT;
+        DECLARE golesMarcadosEquipo2 INT;
+        DECLARE golesMarcadosEquipo3 INT;
+        DECLARE golesMarcadosEquipo4 INT;
+        
+        SET idEquipo1=(SELECT id FROM equipo WHERE grupo_id=idGrupo LIMIT 0,1);
+        SET idEquipo2=(SELECT id FROM equipo WHERE grupo_id=idGrupo LIMIT 1,1);
+        SET idEquipo3=(SELECT id FROM equipo WHERE grupo_id=idGrupo LIMIT 2,1);
+        SET idEquipo4=(SELECT id FROM equipo WHERE grupo_id=idGrupo LIMIT 3,1);
+        
+        SET puntajeEquipo1=(SELECT puntaje FROM equipo WHERE id=idEquipo1);
+        SET puntajeEquipo2=(SELECT puntaje FROM equipo WHERE id=idEquipo2);
+        SET puntajeEquipo3=(SELECT puntaje FROM equipo WHERE id=idEquipo3);
+        SET puntajeEquipo4=(SELECT puntaje FROM equipo WHERE id=idEquipo4);
+        
+        SET difGolesEquipo1=(SELECT diferenciaDeGoles FROM equipo WHERE id=idEquipo1);
+        SET difGolesEquipo2=(SELECT diferenciaDeGoles FROM equipo WHERE id=idEquipo2);
+        SET difGolesEquipo3=(SELECT diferenciaDeGoles FROM equipo WHERE id=idEquipo3);
+        SET difGolesEquipo4=(SELECT diferenciaDeGoles FROM equipo WHERE id=idEquipo4);
+        
+		SET golesMarcadosEquipo1=(SELECT nGolesAFavor FROM equipo WHERE id=idEquipo1);
+        SET golesMarcadosEquipo2=(SELECT nGolesAFavor FROM equipo WHERE id=idEquipo2);
+        SET golesMarcadosEquipo3=(SELECT nGolesAFavor FROM equipo WHERE id=idEquipo3);
+        SET golesMarcadosEquipo4=(SELECT nGolesAFavor FROM equipo WHERE id=idEquipo4);
+        
+        
+		
+    END //
+    
+DELIMITER ;
+    
+    
 
 CALL actualizarGolesEquipoVisita(3,1,2);
 CALL actualizarGolesEquipoLocal(3,2,1);
