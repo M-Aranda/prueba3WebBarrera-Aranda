@@ -14,6 +14,6 @@ $_SESSION['F'] = $d->getEquiposGrupo(7);
 $_SESSION['G'] = $d->getEquiposGrupo(8);
 $_SESSION['H'] = $d->getEquiposGrupo(9);
 
-header("location:../view/sorteo.php");
+header("location: ../view/sorteo.php");
 
 ?>

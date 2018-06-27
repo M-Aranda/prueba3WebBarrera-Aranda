@@ -1,14 +1,12 @@
 body {
     background: #90aeff;
 }
-
 table  {
     background-color: aqua;
     text-align: center;
  
     
 }
-
 div.claseDelDiv{
     background-image: url("../imagenes/background.png");
     width: 100%; 
@@ -18,27 +16,9 @@ div.claseDelDiv{
 button{
     text-align: center;
 }
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #60efb8;
-}
-
-li {
-    float: left;
-}
-
-li a {
+td img{
     display: block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
+    margin-left: auto;
+    margin-right: auto;
 
-li a:hover {
-    background-color: #cefc86;
 }

@@ -4,20 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ver Grupo G</title>
+    <title>Ver Grupo A</title>
 
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href=../"js/bootstrap.js">
     <link rel="stylesheet" href="../css/estilos.css">
-    
 
 </head>
 <body>
 
 
 
-<div class="claseDelDiv">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="claseDelDiv">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">Mundial 2018</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -75,46 +74,40 @@
     </ul>
   </div>
 </nav>
-<div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
-<div class="card-body">
-
-<table border=default>
-
-<tr>
-<th>Pais</th>
-<th>Puntaje</th>
-<th>Numero de goles a favor  </th>
-<th>Numero de goles en contra  </th>
-<th>Diferencia de goles</th>
-</tr>
-
-<?php
-
-require_once("../model/Equipo.php");
-
-session_start();
-
-if (!isset($_SESSION['G'])){ 
-    header("location:../controller/cargarGrupoG.php");
-}
-
-$equiposDelGrupo=$_SESSION['G'];
+        <div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
+            <div class="card-body">
 
 
-foreach ($equiposDelGrupo as $e => $equipo) {
-    echo "<td><img src=".$equipo->getInsignia()."> &#160".$equipo->getNombre()."</td>";
-    echo"<td>".$equipo->getPuntaje()."</td>";
-    echo"<td>".$equipo->getNGolesAFavor()."</td>";
-    echo"<td>".$equipo->getNGolesEnContra()."</td>";
-    echo"<td>".$equipo->getDiferenciaDeGoles()."</td>";
-    echo "</tr></tr>";
+            <?php
+            require_once("../model/Equipo.php");
 
-}
+            /*session_start();
 
-session_destroy();
-?>
+            if (!isset($_SESSION['FIN'])){ 
+                header("location:../controller/cargarOctavos.php");
+            }
 
-</table>
+            $equipos=$_SESSION['FIN'];
+*/
+                echo "<table>";
+                for ($i=0; $i < 31; $i++) { 
+                    echo "<td>";
+                    for($j=0; $j < 9; $j++){
+                        if(($i%2) == 0){
+
+                        }
+                        echo "<td>";
+                        echo "Hola";
+                        echo "</td>";
+                    }
+                    echo "</td>";
+                }
+                echo "<table>";
+
+            ?>
+            </div>
+        </div>
+    </div>
     
 </body>
 </html>

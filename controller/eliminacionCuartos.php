@@ -5,8 +5,9 @@ require_once("../model/Data.php");
 session_start();
 $d=new Data();
 
-$d->sortear_equipos();
+$goles=$_POST['goles']; 
 
-header("location: llenarGrupos.php");
+$j=1;
+$d->sortear_semi();
 
 ?>

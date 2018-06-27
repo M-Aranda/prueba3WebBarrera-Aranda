@@ -4,20 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ver Grupo G</title>
+    <title>Ingresar goles en fase de grupo</title>
 
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href=../"js/bootstrap.js">
     <link rel="stylesheet" href="../css/estilos.css">
-    
 
 </head>
 <body>
-
-
-
 <div class="claseDelDiv">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">Mundial 2018</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -75,46 +71,71 @@
     </ul>
   </div>
 </nav>
-<div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
-<div class="card-body">
+    <br>
+    <br>
+    <br>
 
-<table border=default>
 
-<tr>
-<th>Pais</th>
-<th>Puntaje</th>
-<th>Numero de goles a favor  </th>
-<th>Numero de goles en contra  </th>
-<th>Diferencia de goles</th>
-</tr>
+<h4 class="card-title">Ingreso de goles</h4>
+
+
 
 <?php
 
-require_once("../model/Equipo.php");
+require_once("../model/Data.php");
+require_once("../model/VersusFaseDeGrupo.php");
+$d=new Data();
 
-session_start();
 
-if (!isset($_SESSION['G'])){ 
-    header("location:../controller/cargarGrupoG.php");
+$idsDeGrupos=array(1, 2, 3, 4, 5, 6, 7, 8);
+
+
+
+
+foreach ($idsDeGrupos as $n) {
+    $versus=$d->getVersusOctavo();
+
+
+    echo '<form action="../controller/controladorActualizarStatsDespuesDeFaseDeGrupos.php" method="post">';
+
+    echo "<table border=default align=center>";
+    echo "<tr>";
+    echo "<th>Goles visitante</th>";
+    echo "<th>Equipo visitante</th>";
+    echo "<th>Contra</th>";
+    echo "<th>Equipo local</th>";
+    echo "<th>Goles local</th>";
+    echo "</tr>";
+
+        foreach ($versus as $v) {
+
+            echo '<td><input type="text" name="goles['.$v->getNombreVisita().",".$v->getId().']" placeholder="goles visitante" /></td>';
+            echo "<td><img src=".$v->getInsigniaVisita()."> &#160".$v->getNombreVisita()."</td>";
+            echo "<td>VS</td>";
+            echo "<td><img src=".$v->getInsigniaLocal()."> &#160".$v->getNombreLocal()."</td>";
+            echo '<td><input type="text" name="goles['.$v->getNombreLocal().",".$v->getId().']"  placeholder="goles local"  /></td>';
+            echo "</tr></tr>";
+        
+
+        }
+        echo "</table>";
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+
+
+
 }
 
-$equiposDelGrupo=$_SESSION['G'];
 
 
-foreach ($equiposDelGrupo as $e => $equipo) {
-    echo "<td><img src=".$equipo->getInsignia()."> &#160".$equipo->getNombre()."</td>";
-    echo"<td>".$equipo->getPuntaje()."</td>";
-    echo"<td>".$equipo->getNGolesAFavor()."</td>";
-    echo"<td>".$equipo->getNGolesEnContra()."</td>";
-    echo"<td>".$equipo->getDiferenciaDeGoles()."</td>";
-    echo "</tr></tr>";
 
-}
-
-session_destroy();
 ?>
 
-</table>
+<input type="submit" value="Listo" align:center>
+</form>
+
+
     
 </body>
 </html>

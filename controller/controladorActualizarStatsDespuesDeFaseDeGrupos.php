@@ -25,10 +25,8 @@ for ($i=0; $i < 96; $i+=2) {
    
 }
 
+$d->sortear_octavos();
 
-
-echo "<h1>hola</h1>";
-
-//header("location:../view/octavosDeFinal.php");
+header("location:../view/octavos.php");
 
 ?>
