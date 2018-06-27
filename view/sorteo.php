@@ -7,6 +7,7 @@
     <title>Sorteo</title>
 
     <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/estilos.css">
     <link rel="stylesheet" href="../js/bootstrap.js">
 
 
@@ -18,43 +19,35 @@
 
     <h3>Equipos clasificados para el mundial Rusia 2018</h3>
 
-    <table border="default">
-    
+
 <?php
 require_once("../model/Data.php");
 require_once("../model/Equipo.php");
 
 session_start();
 
-$d= new Data();
-
-$equiposMundial=$d->getEquiposDelMundial();
-
-/*
-<img class="img-fluid" src="../imagenes/egipto.png" alt="">
-*/
-
-
-foreach ($equiposMundial as $e => $equipo) {// ciclo que muestra nombres de equipos junto a sus banderas #somosnada
-    echo "<td>" .$equipo->getNombre()."</td>";
-    echo "<td><img src=".$equipo->getInsignia()."></td>";
-    echo "</tr></tr>";
-
-}
-
-
-
-
-
 
 ?>
 
-
-    </table>
-
-    <form action="#" method="post">
-    <input type="submit" value="Sortear equipos">
-    </form>
+    <div class="claseDelDiv">
+    <br>
+    <br>
+    <br>
+    <div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
+      <div class="card-header">
+        HOLA!!
+      </div>
+      <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">.col-md-3</div>
+            <div class="col-md-3">.col-md-3</div>
+            <div class="col-md-3">.col-md-3</div>
+            <div class="col-md-3">.col-md-3</div>
+        </div>
+        <button href="sorteo.php">Sortear</a>
+      </div>
+    </div>
+  </div>
 
 
     <a href="grupoA.php">Ver grupo A</a>

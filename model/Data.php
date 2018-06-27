@@ -31,6 +31,11 @@ class Data{
         $this->usarConexion($query);
     }
 
+    public function sortear_equipos(){
+        $query="CALL sortear_equipos()";
+        $this->usarConexion($query);
+    }
+
     
     public function getVersusGrupo($idG){
         $this->con->conectar();
@@ -97,12 +102,7 @@ class Data{
         $this->con->desconectar();
 
         return $listaDeEquipos;
-  }
-
-
-
-
-
+    }
 
     public function getEquiposDelMundial(){
         $this->con->conectar();
@@ -140,8 +140,5 @@ class Data{
         $this->con->desconectar();
 
         return $listaDeEquipos;
-
-
-
 }
 }
