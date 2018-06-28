@@ -104,6 +104,47 @@ CREATE TABLE partido(
     PRIMARY KEY(id)
 );
 
+CREATE VIEW octavos_de_final AS -- DROP VIEW octavos_de_final
+SELECT p.id,(SELECT nombre FROM equipo WHERE id = p.equipo_visita_fk),
+(SELECT insignia FROM equipo WHERE id = p.equipo_visita_fk),
+(SELECT nombre FROM equipo WHERE id = p.equipo_local_fk),
+(SELECT insignia FROM equipo WHERE id = p.equipo_local_fk),
+tipo_partido_id,
+p.equipo_local_fk,
+p.equipo_visita_fk
+FROM partido p WHERE p.tipo_partido_id = 2 ; -- SELECT * FROM octavos_de_final
+
+CREATE VIEW cuartos_de_final AS -- DROP VIEW octavos_de_final
+SELECT p.id,(SELECT nombre FROM equipo WHERE id = p.equipo_visita_fk),
+(SELECT insignia FROM equipo WHERE id = p.equipo_visita_fk),
+(SELECT nombre FROM equipo WHERE id = p.equipo_local_fk),
+(SELECT insignia FROM equipo WHERE id = p.equipo_local_fk),
+tipo_partido_id,
+p.equipo_local_fk,
+p.equipo_visita_fk
+FROM partido p WHERE p.tipo_partido_id = 3 ;
+
+CREATE VIEW semi_final AS -- DROP VIEW octavos_de_final
+
+SELECT p.id,(SELECT nombre FROM equipo WHERE id = p.equipo_visita_fk),
+(SELECT insignia FROM equipo WHERE id = p.equipo_visita_fk),
+(SELECT nombre FROM equipo WHERE id = p.equipo_local_fk),
+(SELECT insignia FROM equipo WHERE id = p.equipo_local_fk),
+tipo_partido_id,
+p.equipo_local_fk,
+p.equipo_visita_fk
+FROM partido p WHERE p.tipo_partido_id = 4 ;
+
+CREATE VIEW final AS -- DROP VIEW octavos_de_final
+
+SELECT p.id,(SELECT nombre FROM equipo WHERE id = p.equipo_visita_fk),
+(SELECT insignia FROM equipo WHERE id = p.equipo_visita_fk),
+(SELECT nombre FROM equipo WHERE id = p.equipo_local_fk),
+(SELECT insignia FROM equipo WHERE id = p.equipo_local_fk),
+tipo_partido_id,
+p.equipo_local_fk,
+p.equipo_visita_fk
+FROM partido p WHERE p.tipo_partido_id = 5 ;
 
 DELIMITER $$
 CREATE PROCEDURE eliminacion_directa (goles_local INT,goles_visita INT, id_partido INT)-- DROP PROCEDURE generar_cuartos
@@ -210,19 +251,6 @@ CREATE FUNCTION determinarQuienAvanza (idPrimerEquipo INT, idSegundoEquipo INT, 
     END //
 DELIMITER ;
 
-CREATE TABLE tabla_aux(
-		id INT AUTO_INCREMENT DEFAULT NULL,
-        id_equipo INT,
-        PRIMARY KEY(id)
-    );-- DROP TABLE tabla_aux;
-
-CREATE TABLE ganadores_octavos(
-		id INT AUTO_INCREMENT,
-        id_equipo1 INT,
-        id_equipo2 INT,
-        PRIMARY KEY(id)
-    );-- DROP TABLE ganadores_octavos;
-
 DELIMITER $$
 CREATE PROCEDURE generar_octavos ()-- DROP PROCEDURE generar_octavos;  
 BEGIN
@@ -235,63 +263,65 @@ BEGIN
     DECLARE primero INT;
     DECLARE segundo INT;
     
-    SET cont = 0;  
-	
+    SET cont = 0;
     
-    
-    
-    INSERT INTO tabla_aux(id_equipo) SELECT id FROM equipo ORDER BY grupo_id ASC;
+    CREATE TABLE IF NOT EXISTS ganadores_octavos(
+		id INT AUTO_INCREMENT DEFAULT NULL,
+        id_equipo1 INT,
+        id_equipo2 INT,
+        PRIMARY KEY(id)
+    );-- DROP TABLE ganadores_octavos;
     
     WHILE cont < 8 DO   
 		SET cont = (cont +1);        
        case  
            when cont <= 1 then BEGIN
-			SET equipo1 = (SELECT id_equipo from tabla_aux WHERE id = 1);
-			SET equipo2 = (SELECT id_equipo from tabla_aux WHERE  id = 2);
-			SET equipo3 = (SELECT id_equipo from tabla_aux WHERE  id = 3);
-			SET equipo4 = (SELECT id_equipo from tabla_aux WHERE  id = 4);
+			SET equipo1 = (SELECT id FROM equipo WHERE grupo_id = 2 LIMIT 0,1);
+			SET equipo2 = (SELECT id FROM equipo WHERE grupo_id = 2 LIMIT 1,1);
+			SET equipo3 = (SELECT id FROM equipo WHERE grupo_id = 2 LIMIT 2,1);
+			SET equipo4 = (SELECT id FROM equipo WHERE grupo_id = 2 LIMIT 3,1);
             END;
            when cont <= 2 then BEGIN
-           SET equipo1 = (SELECT id_equipo from tabla_aux WHERE  id = 5);
-			SET equipo2 = (SELECT id_equipo from tabla_aux WHERE  id = 6);
-			SET equipo3 = (SELECT id_equipo from tabla_aux WHERE  id = 7);
-			SET equipo4 = (SELECT id_equipo from tabla_aux WHERE  id = 8);
+            SET equipo1 = (SELECT id FROM equipo WHERE grupo_id = 3 LIMIT 0,1);
+			SET equipo2 = (SELECT id FROM equipo WHERE grupo_id = 3 LIMIT 1,1);
+			SET equipo3 = (SELECT id FROM equipo WHERE grupo_id = 3 LIMIT 2,1);
+			SET equipo4 = (SELECT id FROM equipo WHERE grupo_id = 3 LIMIT 3,1);
             END;
            when cont <= 3 then BEGIN
-           SET equipo1 = (SELECT id_equipo from tabla_aux WHERE  id = 9);
-			SET equipo2 = (SELECT id_equipo from tabla_aux WHERE  id = 10);
-			SET equipo3 = (SELECT id_equipo from tabla_aux WHERE  id = 11);
-			SET equipo4 = (SELECT id_equipo from tabla_aux WHERE  id = 12);
+            SET equipo1 = (SELECT id FROM equipo WHERE grupo_id = 4 LIMIT 0,1);
+			SET equipo2 = (SELECT id FROM equipo WHERE grupo_id = 4 LIMIT 1,1);
+			SET equipo3 = (SELECT id FROM equipo WHERE grupo_id = 4 LIMIT 2,1);
+			SET equipo4 = (SELECT id FROM equipo WHERE grupo_id = 4 LIMIT 3,1);
             END;
            when cont <= 4 then BEGIN
-           SET equipo1 = (SELECT id_equipo from tabla_aux WHERE  id = 13);
-			SET equipo2 = (SELECT id_equipo from tabla_aux WHERE id = 14);
-			SET equipo3 = (SELECT id_equipo from tabla_aux WHERE  id = 15);
-			SET equipo4 = (SELECT id_equipo from tabla_aux WHERE id = 16);
+           SET equipo1 = (SELECT id FROM equipo WHERE grupo_id = 5 LIMIT 0,1);
+			SET equipo2 = (SELECT id FROM equipo WHERE grupo_id = 5 LIMIT 1,1);
+			SET equipo3 = (SELECT id FROM equipo WHERE grupo_id = 5 LIMIT 2,1);
+			SET equipo4 = (SELECT id FROM equipo WHERE grupo_id = 5 LIMIT 3,1);
             END;
            when cont <= 5 then BEGIN
-           SET equipo1 = (SELECT id_equipo from tabla_aux WHERE id = 17);
-			SET equipo2 = (SELECT id_equipo from tabla_aux WHERE  id = 18);
-			SET equipo3 = (SELECT id_equipo from tabla_aux WHERE  id = 19);
-			SET equipo4 = (SELECT id_equipo from tabla_aux WHERE id = 20);
+            SET equipo1 = (SELECT id FROM equipo WHERE grupo_id = 6 LIMIT 0,1);
+			SET equipo2 = (SELECT id FROM equipo WHERE grupo_id = 6 LIMIT 1,1);
+			SET equipo3 = (SELECT id FROM equipo WHERE grupo_id = 6 LIMIT 2,1);
+			SET equipo4 = (SELECT id FROM equipo WHERE grupo_id = 6 LIMIT 3,1);
             END;
            when cont <= 6 then BEGIN
-           SET equipo1 = (SELECT id_equipo from tabla_aux WHERE id = 21);
-			SET equipo2 = (SELECT id_equipo from tabla_aux WHERE id = 22);
-			SET equipo3 = (SELECT id_equipo from tabla_aux WHERE  id = 23);
-			SET equipo4 = (SELECT id_equipo from tabla_aux WHERE  id = 24);
+            SET equipo1 = (SELECT id FROM equipo WHERE grupo_id = 7 LIMIT 0,1);
+			SET equipo2 = (SELECT id FROM equipo WHERE grupo_id = 7 LIMIT 1,1);
+			SET equipo3 = (SELECT id FROM equipo WHERE grupo_id = 7 LIMIT 2,1);
+			SET equipo4 = (SELECT id FROM equipo WHERE grupo_id = 7 LIMIT 3,1);
             END;
            when cont <= 7 then BEGIN
-           SET equipo1 = (SELECT id_equipo from tabla_aux WHERE  id = 25);
-			SET equipo2 = (SELECT id_equipo from tabla_aux WHERE  id = 26);
-			SET equipo3 = (SELECT id_equipo from tabla_aux WHERE  id = 27);
-			SET equipo4 = (SELECT id_equipo from tabla_aux WHERE id = 28);
+            SET equipo1 = (SELECT id FROM equipo WHERE grupo_id = 8 LIMIT 0,1);
+			SET equipo2 = (SELECT id FROM equipo WHERE grupo_id = 8 LIMIT 1,1);
+			SET equipo3 = (SELECT id FROM equipo WHERE grupo_id = 8 LIMIT 2,1);
+			SET equipo4 = (SELECT id FROM equipo WHERE grupo_id = 8 LIMIT 3,1);
             END;
            when cont <= 8 then BEGIN
-           SET equipo1 = (SELECT id_equipo from tabla_aux WHERE id = 29);
-			SET equipo2 = (SELECT id_equipo from tabla_aux WHERE  id = 30);
-			SET equipo3 = (SELECT id_equipo from tabla_aux WHERE  id = 31);
-			SET equipo4 = (SELECT id_equipo from tabla_aux WHERE  id = 32);
+            SET equipo1 = (SELECT id FROM equipo WHERE grupo_id = 9 LIMIT 0,1);
+			SET equipo2 = (SELECT id FROM equipo WHERE grupo_id = 9 LIMIT 1,1);
+			SET equipo3 = (SELECT id FROM equipo WHERE grupo_id = 9 LIMIT 2,1);
+			SET equipo4 = (SELECT id FROM equipo WHERE grupo_id = 9 LIMIT 3,1);
             END;
         end case;
         
@@ -309,70 +339,86 @@ BEGIN
         ELSE 
 			SET primero = candidato;
             SET segundo = equipo4;
-        END IF;
+        END IF;        
         
-        SET segundo = (SELECT determinarQuienAvanza (segundo, equipo2,1));
         
-        IF( segundo != (SELECT determinarQuienAvanza (segundo, equipo2,1))) THEN BEGIN
-            SET segundo = equipo2;
+        SET candidato =  (SELECT determinarQuienAvanza (segundo, equipo1,1));
+        
+        IF( candidato != primero ) THEN BEGIN
+            SET segundo = candidato;
         END;
         END IF;  
         
-        IF( segundo != (SELECT determinarQuienAvanza (segundo, equipo3,1))) THEN BEGIN
-            SET segundo = equipo3;
+        SET candidato =  (SELECT determinarQuienAvanza (segundo, equipo2,1));
+        
+        IF( candidato != primero ) THEN BEGIN
+            SET segundo = candidato;
         END;
         END IF;  
         
-        IF( segundo != (SELECT determinarQuienAvanza (segundo, equipo4,1))) THEN BEGIN
-			SET primero = equipo4;
-        END;
-        END IF;     
+        SET candidato =  (SELECT determinarQuienAvanza (segundo, equipo3,1));
         
-        INSERT INTO ganadores_octavos VALUES (NULL,primero,segundo); 
+        IF( candidato != primero ) THEN BEGIN
+            SET segundo = candidato;
+        END;
+        END IF;  
+        
+        SET candidato =  (SELECT determinarQuienAvanza (segundo, equipo4,1));
+        
+        IF( candidato != primero ) THEN BEGIN
+            SET segundo = candidato;
+        END;
+        END IF;  
+        
+         INSERT INTO ganadores_octavos(id_equipo1,id_equipo2) VALUES (primero,segundo);
         
     END WHILE;
     
-	INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 2),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 1),2,'POR DEFINIR');
-    INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 1),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 2),2,'POR DEFINIR');
-    INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 4),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 3),2,'POR DEFINIR');
-    INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 3),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 4),2,'POR DEFINIR');
-    INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 6),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 5),2,'POR DEFINIR');
-    INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 5),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 6),2,'POR DEFINIR');
-    INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 8),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 7),2,'POR DEFINIR');
-    INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 7),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 8),2,'POR DEFINIR');
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 2),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 1),2,'POR DEFINIR');    
+    INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 4),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 3),2,'POR DEFINIR');    
+    INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 6),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 5),2,'POR DEFINIR');
+    INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 8),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 7),2,'POR DEFINIR');
+    INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 1),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 2),2,'POR DEFINIR');
+    INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 3),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 4),2,'POR DEFINIR');
+    INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 5),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 6),2,'POR DEFINIR');
+    INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 7),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 8),2,'POR DEFINIR');
     
-    DROP TABLE ganadores;
+    
+    TRUNCATE ganadores_octavos;-- SELECT * FROM partido WHERE tipo_partido_id=2
+								-- DELETE FROM partido WHERE tipo_partido_id > 1
     
  END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE generar_cuartos ()-- DROP PROCEDURE generar_cuartos
+CREATE PROCEDURE generar_cuartos ()-- DROP PROCEDURE generar_cuartos 
 BEGIN
     
-	CREATE TEMPORARY TABLE ganadores(
+	CREATE TEMPORARY TABLE IF NOT EXISTS tmp_sort(
 		id INT AUTO_INCREMENT DEFAULT NULL,
         id_equipo INT,
         PRIMARY KEY(id)
     );
     
-    INSERT INTO ganadores(id_equipo) SELECT ((SELECT determinarQuienAvanza (equipo_visita_fk, equipo_local_fk,2))) FROM partido WHERE tipo_partido_id = 2 ORDER BY id ASC;
-		
-	INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo FROM ganadores WHERE id = 2),(SELECT id_equipo FROM ganadores WHERE id = 1),3,'POR DEFINIR');
-	INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo FROM ganadores WHERE id = 4),(SELECT id_equipo FROM ganadores WHERE id = 3),3,'POR DEFINIR');
-	INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo FROM ganadores WHERE id = 6),(SELECT id_equipo FROM ganadores WHERE id = 5),3,'POR DEFINIR');
-	INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo FROM ganadores WHERE id = 8),(SELECT id_equipo FROM ganadores WHERE id = 7),3,'POR DEFINIR');
+    INSERT INTO tmp_sort(id_equipo) SELECT determinarQuienAvanza (equipo_visita_fk, equipo_local_fk,1) FROM octavos_de_final ORDER BY id ASC;
     
-    DROP TABLE ganadores;
+    SELECT * FROM tmp_sort;
+		
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 2),(SELECT id_equipo FROM tmp_sort WHERE id = 1),3,'POR DEFINIR');
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 4),(SELECT id_equipo FROM tmp_sort WHERE id = 3),3,'POR DEFINIR');
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 6),(SELECT id_equipo FROM tmp_sort WHERE id = 5),3,'POR DEFINIR');
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 8),(SELECT id_equipo FROM tmp_sort WHERE id = 7),3,'POR DEFINIR');
+    
+    DROP TABLE tmp_sort;
    
  END$$
-DELIMITER ;
+DELIMITER ;-- CALL generar_cuartos();
 
 DELIMITER $$
 CREATE PROCEDURE generar_semi ()-- DROP PROCEDURE generar_semi
 BEGIN
     
-	CREATE TEMPORARY TABLE ganadores(
+	CREATE TABLE IF NOT EXISTS ganadores(
 		id INT AUTO_INCREMENT DEFAULT NULL,
         id_equipo INT,
         PRIMARY KEY(id)
@@ -392,7 +438,7 @@ DELIMITER $$
 CREATE PROCEDURE generar_final ()-- DROP PROCEDURE generar_final
 BEGIN
     
-	CREATE TEMPORARY TABLE ganadores(
+	CREATE TABLE IF NOT EXISTS ganadores(
 		id INT AUTO_INCREMENT DEFAULT NULL,
         id_equipo INT,
         PRIMARY KEY(id)
@@ -426,7 +472,7 @@ BEGIN
     DECLARE grupo_fk INT;
     SET cont = 0;
     
-	CREATE TEMPORARY TABLE tmp_sort(
+	CREATE TABLE IF NOT EXISTS tmp_sort(
 		id INT AUTO_INCREMENT DEFAULT NULL,
         id_equipo INT,
         PRIMARY KEY(id)
@@ -451,11 +497,17 @@ BEGIN
         
     END WHILE;
     DROP TABLE tmp_sort;
+    CALL faseDeGruposCrearPartidosParaUnGrupo(2);
+	CALL faseDeGruposCrearPartidosParaUnGrupo(3);
+	CALL faseDeGruposCrearPartidosParaUnGrupo(4);
+	CALL faseDeGruposCrearPartidosParaUnGrupo(5);
+	CALL faseDeGruposCrearPartidosParaUnGrupo(6);
+	CALL faseDeGruposCrearPartidosParaUnGrupo(7);
+	CALL faseDeGruposCrearPartidosParaUnGrupo(8);
+	CALL faseDeGruposCrearPartidosParaUnGrupo(9);
     
  END$$
 DELIMITER ;
-
-CALL sortear_equipos;
 
 
 
@@ -550,19 +602,6 @@ CREATE PROCEDURE faseDeGruposCrearPartidosParaUnGrupo(fk_grupo INT) -- DROP PROC
     
 DELIMITER ;
 
-
-
-CALL faseDeGruposCrearPartidosParaUnGrupo(2);
-CALL faseDeGruposCrearPartidosParaUnGrupo(3);
-CALL faseDeGruposCrearPartidosParaUnGrupo(4);
-CALL faseDeGruposCrearPartidosParaUnGrupo(5);
-CALL faseDeGruposCrearPartidosParaUnGrupo(6);
-CALL faseDeGruposCrearPartidosParaUnGrupo(7);
-CALL faseDeGruposCrearPartidosParaUnGrupo(8);
-CALL faseDeGruposCrearPartidosParaUnGrupo(9);
-
-
-
 DELIMITER //
 CREATE PROCEDURE mostrarVSDeUnGrupo(idDelGrupo INT) --  DROP PROCEDURE mostrarVSDeUnGrupo;
 	BEGIN
@@ -588,7 +627,7 @@ CREATE PROCEDURE mostrarVSDeUnGrupo(idDelGrupo INT) --  DROP PROCEDURE mostrarVS
         
         
         
-		CREATE TEMPORARY TABLE tblVS(
+		CREATE TEMPORARY TABLE IF NOT EXISTS tblVS(
 		id INT AUTO_INCREMENT,
 		nomVisita VARCHAR (20),
         insigniaVisita VARCHAR (2000),

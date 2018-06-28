@@ -53,6 +53,11 @@ class Data{
         $this->usarConexion($query);
     }
 
+    public function reset_final(){
+        $query="DELETE FROM partido WHERE tipo_partido_id > 1";
+        $this->usarConexion($query);
+    }
+
     
     public function getVersusGrupo($idG){
         $this->con->conectar();
@@ -85,7 +90,7 @@ class Data{
     public function getVersusOctavo(){
         $this->con->conectar();
 
-        $query="SELECT * FROM partido WHERE tipo_partido_id = 2";
+        $query="SELECT * FROM octavos_de_final";
 
         $rs = $this->con->ejecutar($query);
 

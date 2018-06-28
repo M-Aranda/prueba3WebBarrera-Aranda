@@ -25,6 +25,7 @@ for ($i=0; $i < 96; $i+=2) {
    
 }
 
+$d->reset_final();
 $d->sortear_octavos();
 
 header("location:../view/octavos.php");

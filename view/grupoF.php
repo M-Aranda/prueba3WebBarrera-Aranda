@@ -24,7 +24,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="sortear.php">Sortear<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="sorteo.php">Sortear<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="grupoA.php">A<span class="sr-only">(current)</span></a>

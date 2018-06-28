@@ -21,7 +21,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="sortear.php">Sortear<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="sorteo.php">Sortear<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="grupoA.php">A<span class="sr-only">(current)</span></a>
@@ -87,12 +87,6 @@ require_once("../model/VersusFaseDeGrupo.php");
 $d=new Data();
 
 
-$idsDeGrupos=array(1, 2, 3, 4, 5, 6, 7, 8);
-
-
-
-
-foreach ($idsDeGrupos as $n) {
     $versus=$d->getVersusOctavo();
 
 
@@ -122,10 +116,6 @@ foreach ($idsDeGrupos as $n) {
         echo "<br>";
         echo "<br>";
         echo "<br>";
-
-
-
-}
 
 
 

@@ -50,10 +50,6 @@ class VersusFaseDeGrupo{
         
         return $this->insigniaLocal;
     }
-
-
-    
-
     
     public function setId($id){
         $this->id = $id;
