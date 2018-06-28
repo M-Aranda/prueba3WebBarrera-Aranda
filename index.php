@@ -21,7 +21,6 @@
   </div>
   <div class="card-body">
     <h5 class="card-title">¡Bienvenido al simulador del Mundial de Rusia 2018!</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
     <img class="card-img-top" src="imagenes/paises.png" alt="Card image cap" style="width: 60%;">
     <br>
     <br>

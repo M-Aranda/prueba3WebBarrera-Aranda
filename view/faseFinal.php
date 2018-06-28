@@ -65,6 +65,10 @@
       <li class="nav-item active">
         <a class="nav-link" href="faseDeGruposGoles.php">Goles<span class="sr-only">(current)</span></a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="faseFinal.php">Resultado<span class="sr-only">(current)</span></a>
+      </li>
+      
     </ul>
   </div>
 </nav>
@@ -73,72 +77,60 @@
     <br>
     <div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
       <div class="card-header">
-      <h3>Final</h3>
+      <h3>Resultado</h3>
       </div>
       <div class="card-body">
-      <h3>Primer Lugar</h3>
 
 
 
 <?php
 
 require_once("../model/Data.php");
-require_once("../model/VersusFaseFinal.php");
+require_once("../model/Equipo.php");
 
 $d=new Data();
 
-
-    $versus=$d->getVersusFinal();
-
-
-    echo '<form action="../controller/final.php" method="post">';
-
-    echo "<table border=default align=center>";
-    echo "<tr>";
-    echo "<th>Goles visitante</th>";
-    echo "<th>Equipo visitante</th>";
-    echo "<th>Contra</th>";
-    echo "<th>Equipo local</th>";
-    echo "<th>Goles local</th>";
-    echo "</tr>";
-
-    echo '<td><input type="text" name="v'.$versus[0]->getId().'" placeholder="goles visitante" /></td>';
-    echo "<td><img src=".$versus[0]->getInsigniaVisita()."> &#160".$versus[0]->getNombreVisita()."</td>";
-    echo "<td>VS</td>";
-    echo "<td><img src=".$versus[0]->getInsigniaLocal()."> &#160".$versus[0]->getNombreLocal()."</td>";
-    echo '<td><input type="text" name="l'.$versus[0]->getId().'"  placeholder="goles local"  /></td>';
-    echo "</tr></tr>";
-    echo "</table>";
-    echo "<br>";
-    echo "<br>";
+    $campeon=$d->getCampeon();
+    $tercer=$d->getTercero();
+    
+    if($campeon != null){
 ?>
-<h3>Tercer Lugar</h3>
+<div class="col"><h3>Campeon</h3></div>
+                <br>
+                <div class="centrado"><?php
+                echo "<img src=".$campeon->getInsignia()."> &#160".$campeon->getNombre();
+                ?></div>
+                <br>
+                <br>
+                <br>
+<div class="col"><h3>Tercer Lugar</h3></div>
+                <br>
+                <div class="centrado"><?php
+                echo "<img src=".$tercer->getInsignia()."> &#160".$tercer->getNombre();
+                ?></div>
+                <br>
+</div>
 <?php
-
-    echo "<table border=default align=center>";
-    echo "<tr>";
-    echo "<th>Goles visitante</th>";
-    echo "<th>Equipo visitante</th>";
-    echo "<th>Contra</th>";
-    echo "<th>Equipo local</th>";
-    echo "<th>Goles local</th>";
-    echo "</tr>";
-
-    echo '<td><input type="text" name="v'.$versus[1]->getId().'" placeholder="goles visitante" /></td>';
-    echo "<td><img src=".$versus[1]->getInsigniaVisita()."> &#160".$versus[1]->getNombreVisita()."</td>";
-    echo "<td>VS</td>";
-    echo "<td><img src=".$versus[1]->getInsigniaLocal()."> &#160".$versus[1]->getNombreLocal()."</td>";
-    echo '<td><input type="text" name="l'.$versus[1]->getId().'"  placeholder="goles local"  /></td>';
-    echo "</tr></tr>";
-    echo "</table>";
-    echo "<br>";
-    echo "<br>";
+    }else{
 ?>
-
-<input type="submit" value="Listo">
-</form>
+<div class="col"><h3>Campeon</h3></div>
+                <br>
+                <div class="centrado"><?php
+                echo "POR DEFINIR";
+                ?></div>
+                <br>
+                <br>
+                <br>
+<div class="col"><h3>Tercer Lugar</h3></div>
+                <br>
+                <div class="centrado"><?php
+                echo "POR DEFINIR";
+                ?></div>
+                <br>
 </div>
-</div>
+<?php
+    }
+?>
 </div>
 
 

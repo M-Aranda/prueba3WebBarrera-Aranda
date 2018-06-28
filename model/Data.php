@@ -32,6 +32,7 @@ class Data{
         $this->usarConexion($query);
     }
 
+
     public function sortear_equipos(){
         $query="CALL sortear_equipos()";
         $this->usarConexion($query);
@@ -210,6 +211,55 @@ class Data{
         $this->con->desconectar();
 
         return $listadoDePartidos;
+    }
+
+    public function getCampeon(){
+        $this->con->conectar();
+
+        $query="SELECT e.id,e.nombre,e.insignia FROM equipo e WHERE nombre = (SELECT ganador FROM partido WHERE tipo_partido_id = 5 LIMIT 0,1)";
+
+        $rs = $this->con->ejecutar($query);
+
+        $campeon = null;
+        
+        if($reg = $rs->fetch_array()){
+            
+            $id=$reg[0];
+            $nombreVisita=$reg[1];
+            $insigniaVisita=$reg[2];
+
+            $campeon = new Equipo($id,$nombreVisita,$insigniaVisita,0,0,0,0,0);
+        }
+
+        
+
+        $this->con->desconectar();
+
+        return $campeon;
+    }
+    public function getTercero(){
+        $this->con->conectar();
+
+        $query="SELECT e.id,e.nombre,e.insignia FROM equipo e WHERE nombre = (SELECT ganador FROM partido WHERE tipo_partido_id = 5 LIMIT 1,1)";
+
+        $rs = $this->con->ejecutar($query);
+
+        $campeon = null;
+        
+        if($reg = $rs->fetch_array()){
+            
+            $id=$reg[0];
+            $nombreVisita=$reg[1];
+            $insigniaVisita=$reg[2];
+
+            $campeon = new Equipo($id,$nombreVisita,$insigniaVisita,0,0,0,0,0);
+        }
+
+        
+
+        $this->con->desconectar();
+
+        return $campeon;
     }
 
 

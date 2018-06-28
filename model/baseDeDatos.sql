@@ -11,7 +11,7 @@ CREATE TABLE grupo(
 );
 
 INSERT INTO grupo VALUES (NULL,'No Grupo'),(NULL,'Grupo A'),(NULL,'Grupo B'),(NULL,'Grupo C'),(NULL,'Grupo D'),(NULL,'Grupo E'),(NULL,'Grupo F'),(NULL,'Grupo G'),(NULL,'Grupo H');
-
+-- DELETE FROM partido WHERE tipo_partido_id = 5;
 
 CREATE TABLE equipo(
     id INT AUTO_INCREMENT,
@@ -26,6 +26,8 @@ CREATE TABLE equipo(
     PRIMARY KEY(id)
 
 );
+
+-- SELECT e.id,e.nombre,e.insignia FROM equipo e WHERE nombre = (SELECT ganador FROM partido WHERE tipo_partido_id = 5 LIMIT 0,1)
 
 INSERT INTO equipo VALUES (NULL, 'Egipto','../imagenes/Egipto.png',0,0,0,0,1);
 INSERT INTO equipo VALUES (NULL, 'Marruecos','../imagenes/Marruecos.png',0,0,0,0,1);
@@ -153,11 +155,11 @@ BEGIN
     DECLARE id_aux INT;
     
     IF( goles_local > goles_visita ) THEN
-	 SET vencedor = (SELECT nombre from equipo WHERE id = (SELECT equipo_local_fk FROM partido WHERE id = id_partido));
-     SET id_aux = (SELECT equipo_local_fk FROM partido WHERE id = id_partido);
-	ELSE
-     SET vencedor = (SELECT nombre from equipo WHERE id = (SELECT equipo_visita_fk FROM partido WHERE id = id_partido));
+	 SET vencedor = (SELECT nombre from equipo WHERE id = (SELECT equipo_visita_fk FROM partido WHERE id = id_partido));
      SET id_aux = (SELECT equipo_visita_fk FROM partido WHERE id = id_partido);
+	ELSE
+     SET vencedor = (SELECT nombre from equipo WHERE id = (SELECT equipo_local_fk FROM partido WHERE id = id_partido));
+     SET id_aux = (SELECT equipo_local_fk FROM partido WHERE id = id_partido);
 	END IF;
     
     UPDATE partido SET ganador = vencedor WHERE id = id_partido;
@@ -480,17 +482,6 @@ BEGIN
 DELIMITER ;-- SELECT * From semi_final limit 0,1
 -- SELECT * FROM partido WHERE tipo_partido_id = 4
 -- DELETE FROM partido WHERE tipo_partido_id = 4
-
-DELIMITER $$
-CREATE PROCEDURE generar_campeon ()-- DROP PROCEDURE generar_campeon
-BEGIN
-	DECLARE campeon int;
-	SET campeon = (SELECT (SELECT determinarQuienAvanza (equipo_visita_fk, equipo_local_fk,5)) FROM partido WHERE tipo_partido_id = 5);
-    
-    SELECT * FROM equipo WHERE id = campeon;
-   
- END$$
-DELIMITER ;
 
 
 DELIMITER $$

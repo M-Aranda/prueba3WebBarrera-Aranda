@@ -65,6 +65,9 @@
       <li class="nav-item active">
         <a class="nav-link" href="faseDeGruposGoles.php">Goles<span class="sr-only">(current)</span></a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="faseFinal.php">Resultado<span class="sr-only">(current)</span></a>
+      </li>
     </ul>
   </div>
 </nav>
@@ -89,6 +92,7 @@ $d=new Data();
 
 
     $versus=$d->getVersusFinal();
+    if($versus != null){
 
 
     echo '<form action="../controller/final.php" method="post">';
@@ -133,10 +137,30 @@ $d=new Data();
     echo "</table>";
     echo "<br>";
     echo "<br>";
-?>
-
+    ?>
 <input type="submit" value="Listo">
 </form>
+<?php
+    }else{
+      ?>
+      <div class="col"></div>
+                      <br>
+                      <div class="centrado"><?php
+                      echo "POR DEFINIR";
+                      ?></div>
+                      <br>
+                      <br>
+                      <br>
+      <div class="col"><h3>Tercer Lugar</h3></div>
+                      <br>
+                      <div class="centrado"><?php
+                      echo "POR DEFINIR";
+                      ?></div>
+                      <br>
+      </div>
+<?php
+          }
+  ?>
 </div>
 </div>
 </div>

@@ -66,8 +66,9 @@
         <a class="nav-link" href="faseDeGruposGoles.php">Goles<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="golesFinal.php">GolesFinal<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="faseFinal.php">Resultado<span class="sr-only">(current)</span></a>
       </li>
+      
     </ul>
   </div>
 </nav>
@@ -86,6 +87,7 @@
 
 require_once("../model/Data.php");
 require_once("../model/VersusFaseFinal.php");
+
 $d=new Data();
 
 
