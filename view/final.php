@@ -65,38 +65,33 @@
       <li class="nav-item active">
         <a class="nav-link" href="faseDeGruposGoles.php">Goles<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="golesFinal.php">GolesFinal<span class="sr-only">(current)</span></a>
-      </li>
     </ul>
   </div>
 </nav>
     <br>
     <br>
     <br>
-
-
-<h4 class="card-title">Ingreso de goles</h4>
+    <div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
+      <div class="card-header">
+      <h3>Final</h3>
+      </div>
+      <div class="card-body">
+      <h3>Primer Lugar</h3>
 
 
 
 <?php
 
 require_once("../model/Data.php");
-require_once("../model/VersusFaseDeGrupo.php");
+require_once("../model/VersusFaseFinal.php");
+
 $d=new Data();
 
 
-$idsDeGrupos=array(1);
-
-
-
-
-foreach ($idsDeGrupos as $n) {
     $versus=$d->getVersusFinal();
 
 
-    echo '<form action="../controller/controladorActualizarStatsDespuesDeFaseDeGrupos.php" method="post">';
+    echo '<form action="../controller/final.php" method="post">';
 
     echo "<table border=default align=center>";
     echo "<tr>";
@@ -107,33 +102,44 @@ foreach ($idsDeGrupos as $n) {
     echo "<th>Goles local</th>";
     echo "</tr>";
 
-        foreach ($versus as $v) {
+    echo '<td><input type="text" name="v'.$versus[0]->getId().'" placeholder="goles visitante" /></td>';
+    echo "<td><img src=".$versus[0]->getInsigniaVisita()."> &#160".$versus[0]->getNombreVisita()."</td>";
+    echo "<td>VS</td>";
+    echo "<td><img src=".$versus[0]->getInsigniaLocal()."> &#160".$versus[0]->getNombreLocal()."</td>";
+    echo '<td><input type="text" name="l'.$versus[0]->getId().'"  placeholder="goles local"  /></td>';
+    echo "</tr></tr>";
+    echo "</table>";
+    echo "<br>";
+    echo "<br>";
+?>
+<h3>Tercer Lugar</h3>
+<?php
 
-            echo '<td><input type="text" name="goles['.$v->getNombreVisita().",".$v->getId().']" placeholder="goles visitante" /></td>';
-            echo "<td><img src=".$v->getInsigniaVisita()."> &#160".$v->getNombreVisita()."</td>";
-            echo "<td>VS</td>";
-            echo "<td><img src=".$v->getInsigniaLocal()."> &#160".$v->getNombreLocal()."</td>";
-            echo '<td><input type="text" name="goles['.$v->getNombreLocal().",".$v->getId().']"  placeholder="goles local"  /></td>';
-            echo "</tr></tr>";
-        
+    echo "<table border=default align=center>";
+    echo "<tr>";
+    echo "<th>Goles visitante</th>";
+    echo "<th>Equipo visitante</th>";
+    echo "<th>Contra</th>";
+    echo "<th>Equipo local</th>";
+    echo "<th>Goles local</th>";
+    echo "</tr>";
 
-        }
-        echo "</table>";
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
-
-
-
-}
-
-
-
-
+    echo '<td><input type="text" name="v'.$versus[1]->getId().'" placeholder="goles visitante" /></td>';
+    echo "<td><img src=".$versus[1]->getInsigniaVisita()."> &#160".$versus[1]->getNombreVisita()."</td>";
+    echo "<td>VS</td>";
+    echo "<td><img src=".$versus[1]->getInsigniaLocal()."> &#160".$versus[1]->getNombreLocal()."</td>";
+    echo '<td><input type="text" name="l'.$versus[1]->getId().'"  placeholder="goles local"  /></td>';
+    echo "</tr></tr>";
+    echo "</table>";
+    echo "<br>";
+    echo "<br>";
 ?>
 
-<input type="submit" value="Listo" align:center>
+<input type="submit" value="Listo">
 </form>
+</div>
+</div>
+</div>
 
 
     

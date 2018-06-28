@@ -74,8 +74,14 @@
     </ul>
   </div>
 </nav>
-<div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
-<div class="card-body">
+<br>
+    <br>
+    <br>
+    <div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
+      <div class="card-header">
+      <h3>Posiciones Grupo C</h3>
+      </div>
+      <div class="card-body">
 
 <table border=default>
 

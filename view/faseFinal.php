@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ver Grupo A</title>
+    <title>Ingresar goles en fase de grupo</title>
 
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href=../"js/bootstrap.js">
@@ -12,10 +12,7 @@
 
 </head>
 <body>
-
-
-
-    <div class="claseDelDiv">
+<div class="claseDelDiv">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">Mundial 2018</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,46 +65,83 @@
       <li class="nav-item active">
         <a class="nav-link" href="faseDeGruposGoles.php">Goles<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="golesFinal.php">GolesFinal<span class="sr-only">(current)</span></a>
-      </li>
     </ul>
   </div>
 </nav>
-        <div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
-            <div class="card-body">
+    <br>
+    <br>
+    <br>
+    <div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
+      <div class="card-header">
+      <h3>Final</h3>
+      </div>
+      <div class="card-body">
+      <h3>Primer Lugar</h3>
 
 
-            <?php
-            require_once("../model/Equipo.php");
 
-            /*session_start();
+<?php
 
-            if (!isset($_SESSION['FIN'])){ 
-                header("location:../controller/cargarOctavos.php");
-            }
+require_once("../model/Data.php");
+require_once("../model/VersusFaseFinal.php");
 
-            $equipos=$_SESSION['FIN'];
-*/
-                echo "<table>";
-                for ($i=0; $i < 31; $i++) { 
-                    echo "<td>";
-                    for($j=0; $j < 9; $j++){
-                        if(($i%2) == 0){
+$d=new Data();
 
-                        }
-                        echo "<td>";
-                        echo "Hola";
-                        echo "</td>";
-                    }
-                    echo "</td>";
-                }
-                echo "<table>";
 
-            ?>
-            </div>
-        </div>
-    </div>
+    $versus=$d->getVersusFinal();
+
+
+    echo '<form action="../controller/final.php" method="post">';
+
+    echo "<table border=default align=center>";
+    echo "<tr>";
+    echo "<th>Goles visitante</th>";
+    echo "<th>Equipo visitante</th>";
+    echo "<th>Contra</th>";
+    echo "<th>Equipo local</th>";
+    echo "<th>Goles local</th>";
+    echo "</tr>";
+
+    echo '<td><input type="text" name="v'.$versus[0]->getId().'" placeholder="goles visitante" /></td>';
+    echo "<td><img src=".$versus[0]->getInsigniaVisita()."> &#160".$versus[0]->getNombreVisita()."</td>";
+    echo "<td>VS</td>";
+    echo "<td><img src=".$versus[0]->getInsigniaLocal()."> &#160".$versus[0]->getNombreLocal()."</td>";
+    echo '<td><input type="text" name="l'.$versus[0]->getId().'"  placeholder="goles local"  /></td>';
+    echo "</tr></tr>";
+    echo "</table>";
+    echo "<br>";
+    echo "<br>";
+?>
+<h3>Tercer Lugar</h3>
+<?php
+
+    echo "<table border=default align=center>";
+    echo "<tr>";
+    echo "<th>Goles visitante</th>";
+    echo "<th>Equipo visitante</th>";
+    echo "<th>Contra</th>";
+    echo "<th>Equipo local</th>";
+    echo "<th>Goles local</th>";
+    echo "</tr>";
+
+    echo '<td><input type="text" name="v'.$versus[1]->getId().'" placeholder="goles visitante" /></td>';
+    echo "<td><img src=".$versus[1]->getInsigniaVisita()."> &#160".$versus[1]->getNombreVisita()."</td>";
+    echo "<td>VS</td>";
+    echo "<td><img src=".$versus[1]->getInsigniaLocal()."> &#160".$versus[1]->getNombreLocal()."</td>";
+    echo '<td><input type="text" name="l'.$versus[1]->getId().'"  placeholder="goles local"  /></td>';
+    echo "</tr></tr>";
+    echo "</table>";
+    echo "<br>";
+    echo "<br>";
+?>
+
+<input type="submit" value="Listo">
+</form>
+</div>
+</div>
+</div>
+
+
     
 </body>
 </html>

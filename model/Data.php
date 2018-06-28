@@ -2,6 +2,7 @@
 require_once("Conexion.php");
 require_once("Equipo.php");
 require_once("VersusFaseDeGrupo.php");
+require_once("VersusFaseFinal.php");
 
 class Data{
     private $con;
@@ -58,7 +59,11 @@ class Data{
         $this->usarConexion($query);
     }
 
-    
+    public function eliminacion_directa($gLocal,$gVisita,$id_partido){
+        $query="CALL eliminacion_directa($gLocal,$gVisita,$id_partido)";
+        $this->usarConexion($query);
+    }
+
     public function getVersusGrupo($idG){
         $this->con->conectar();
 
@@ -103,8 +108,11 @@ class Data{
             $insigniaVisita=$reg[2];
             $nombreLocal=$reg[3];
             $insigniaLocal=$reg[4];
+            $tipo_partido_id=$reg[5];
+            $idLocal=$reg[6];
+            $idVisita=$reg[7];
 
-            $versus = new VersusFaseDeGrupo($id,$nombreVisita,$insigniaVisita,$nombreLocal,$insigniaLocal);
+            $versus = new VersusFaseFinal($id,$nombreVisita,$insigniaVisita,$nombreLocal,$insigniaLocal,$idVisita,$idLocal,$tipo_partido_id);
             $listadoDePartidos[]=$versus;
         }
 
@@ -117,7 +125,7 @@ class Data{
     public function getVersusCuartos(){
         $this->con->conectar();
 
-        $query="SELECT * FROM partido WHERE tipo_partido_id = 3";
+        $query="SELECT * FROM cuartos_de_final";
 
         $rs = $this->con->ejecutar($query);
 
@@ -130,11 +138,13 @@ class Data{
             $insigniaVisita=$reg[2];
             $nombreLocal=$reg[3];
             $insigniaLocal=$reg[4];
+            $tipo_partido_id=$reg[5];
+            $idLocal=$reg[6];
+            $idVisita=$reg[7];
 
-            $versus = new VersusFaseDeGrupo($id,$nombreVisita,$insigniaVisita,$nombreLocal,$insigniaLocal);
+            $versus = new VersusFaseFinal($id,$nombreVisita,$insigniaVisita,$nombreLocal,$insigniaLocal,$idVisita,$idLocal,$tipo_partido_id);
             $listadoDePartidos[]=$versus;
         }
-
         
 
         $this->con->desconectar();
@@ -144,7 +154,7 @@ class Data{
     public function getVersusSemi(){
         $this->con->conectar();
 
-        $query="SELECT * FROM partido WHERE tipo_partido_id = 4";
+        $query="SELECT * FROM semi_final";
 
         $rs = $this->con->ejecutar($query);
 
@@ -157,11 +167,13 @@ class Data{
             $insigniaVisita=$reg[2];
             $nombreLocal=$reg[3];
             $insigniaLocal=$reg[4];
+            $tipo_partido_id=$reg[5];
+            $idLocal=$reg[6];
+            $idVisita=$reg[7];
 
-            $versus = new VersusFaseDeGrupo($id,$nombreVisita,$insigniaVisita,$nombreLocal,$insigniaLocal);
+            $versus = new VersusFaseFinal($id,$nombreVisita,$insigniaVisita,$nombreLocal,$insigniaLocal,$idVisita,$idLocal,$tipo_partido_id);
             $listadoDePartidos[]=$versus;
         }
-
         
 
         $this->con->desconectar();
@@ -172,7 +184,7 @@ class Data{
     public function getVersusFinal(){
         $this->con->conectar();
 
-        $query="SELECT * FROM partido WHERE tipo_partido_id = 5";
+        $query="SELECT * FROM final";
 
         $rs = $this->con->ejecutar($query);
 
@@ -185,8 +197,11 @@ class Data{
             $insigniaVisita=$reg[2];
             $nombreLocal=$reg[3];
             $insigniaLocal=$reg[4];
+            $tipo_partido_id=$reg[5];
+            $idLocal=$reg[6];
+            $idVisita=$reg[7];
 
-            $versus = new VersusFaseDeGrupo($id,$nombreVisita,$insigniaVisita,$nombreLocal,$insigniaLocal);
+            $versus = new VersusFaseFinal($id,$nombreVisita,$insigniaVisita,$nombreLocal,$insigniaLocal,$idVisita,$idLocal,$tipo_partido_id);
             $listadoDePartidos[]=$versus;
         }
 

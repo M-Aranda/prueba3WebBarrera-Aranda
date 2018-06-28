@@ -27,8 +27,6 @@ CREATE TABLE equipo(
 
 );
 
-
-
 INSERT INTO equipo VALUES (NULL, 'Egipto','../imagenes/Egipto.png',0,0,0,0,1);
 INSERT INTO equipo VALUES (NULL, 'Marruecos','../imagenes/Marruecos.png',0,0,0,0,1);
 INSERT INTO equipo VALUES (NULL, 'Nigeria','../imagenes/Nigeria.png',0,0,0,0,1);
@@ -81,15 +79,15 @@ CREATE TABLE equipo_visita(
     equipo_id INT,
     FOREIGN KEY (equipo_id) REFERENCES equipo (id),
     PRIMARY KEY(id)
-);
+);-- SELECT * FROM equipo_visita
 
 CREATE TABLE equipo_local(
 	id INT AUTO_INCREMENT,
     equipo_id INT,
     FOREIGN KEY (equipo_id) REFERENCES equipo (id),
     PRIMARY KEY(id)
-);
-
+);-- SELECT * FROM equipo_local
+-- SELECT * FROM equipo WHERE id = 1
 
 CREATE TABLE partido(
     id INT AUTO_INCREMENT,
@@ -105,7 +103,8 @@ CREATE TABLE partido(
 );
 
 CREATE VIEW octavos_de_final AS -- DROP VIEW octavos_de_final
-SELECT p.id,(SELECT nombre FROM equipo WHERE id = p.equipo_visita_fk),
+SELECT p.id,
+(SELECT nombre FROM equipo WHERE id = p.equipo_visita_fk),
 (SELECT insignia FROM equipo WHERE id = p.equipo_visita_fk),
 (SELECT nombre FROM equipo WHERE id = p.equipo_local_fk),
 (SELECT insignia FROM equipo WHERE id = p.equipo_local_fk),
@@ -147,18 +146,23 @@ p.equipo_visita_fk
 FROM partido p WHERE p.tipo_partido_id = 5 ;
 
 DELIMITER $$
-CREATE PROCEDURE eliminacion_directa (goles_local INT,goles_visita INT, id_partido INT)-- DROP PROCEDURE generar_cuartos
+CREATE PROCEDURE eliminacion_directa (goles_local INT,goles_visita INT, id_partido INT) -- DROP Procedure eliminacion_directa
 BEGIN
 
 	DECLARE vencedor VARCHAR (20);
+    DECLARE id_aux INT;
     
     IF( goles_local > goles_visita ) THEN
 	 SET vencedor = (SELECT nombre from equipo WHERE id = (SELECT equipo_local_fk FROM partido WHERE id = id_partido));
+     SET id_aux = (SELECT equipo_local_fk FROM partido WHERE id = id_partido);
 	ELSE
      SET vencedor = (SELECT nombre from equipo WHERE id = (SELECT equipo_visita_fk FROM partido WHERE id = id_partido));
+     SET id_aux = (SELECT equipo_visita_fk FROM partido WHERE id = id_partido);
 	END IF;
     
     UPDATE partido SET ganador = vencedor WHERE id = id_partido;
+    
+    #RETURN id;
    
  END$$
 DELIMITER ;
@@ -170,7 +174,7 @@ CREATE TABLE tipoResultado(
     nombre VARCHAR (30),
     PRIMARY KEY(id)
 
-);
+);SELECT * FROM octavos_de_final
 
 INSERT INTO tipoResultado VALUES (NULL, 'Hubo un ganador');
 INSERT INTO tipoResultado VALUES (NULL, 'Empate');
@@ -189,7 +193,6 @@ CREATE TABLE resultado(
 );
 
 */
-
 DELIMITER //
 CREATE FUNCTION determinarQuienAvanza (idPrimerEquipo INT, idSegundoEquipo INT, fase INT) RETURNS INT-- DROP FUNCTION determinarQuienAvanza
 	BEGIN
@@ -203,6 +206,8 @@ CREATE FUNCTION determinarQuienAvanza (idPrimerEquipo INT, idSegundoEquipo INT, 
         DECLARE idEquipo2 INT;
         DECLARE idGanador INT;
         DECLARE numeroRandom INT;
+        DECLARE id_partido INT;-- SELECT * FROM partido
+			-- (SELECT id FROM partido WHERE ((equipo_local_fk = 12) OR (equipo_visita_fk = idSegundoEquipo)) AND tipo_partido_id = fase)
         
         
 		SET idEquipo1=(SELECT id FROM equipo WHERE id=idPrimerEquipo);
@@ -241,15 +246,15 @@ CREATE FUNCTION determinarQuienAvanza (idPrimerEquipo INT, idSegundoEquipo INT, 
             END IF;		
 			END IF;
 		ELSEIF fase>1 THEN
-			IF golesMarcadosEquipo1>golesMarcadosEquipo2 THEN
-					SET idGanador=idEquipo1;
-			ELSEIF golesMarcadosEquipo1<golesMarcadosEquipo2 THEN
-					SET idGanador=idEquipo2;
-			END IF;
+			SET id_partido = (SELECT id FROM partido WHERE ((equipo_local_fk = idPrimerEquipo) OR (idPrimerEquipo = equipo_visita_fk)) AND tipo_partido_id = fase);
+			SET idGanador = (SELECT e.id FROM equipo e WHERE e.nombre = (SELECT ganador FROM partido WHERE id = id_partido));
 		END IF;
+        
        RETURN idGanador;
     END //
-DELIMITER ;
+DELIMITER ;-- SELECT * FROM partido WHERE tipo_partido_id = 2
+-- (SELECT id FROM partido WHERE ((equipo_local_fk = 18) OR (1 = equipo_visita_fk)) AND tipo_partido_id = 3)
+-- SELECT e.id FROM equipo e WHERE e.nombre = (SELECT ganador FROM partido WHERE id = (SELECT id FROM partido WHERE ((equipo_local_fk = 18) OR (1 = equipo_visita_fk)) AND tipo_partido_id = 3))
 
 DELIMITER $$
 CREATE PROCEDURE generar_octavos ()-- DROP PROCEDURE generar_octavos;  
@@ -384,39 +389,44 @@ BEGIN
     INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo2 FROM ganadores_octavos WHERE id = 7),(SELECT id_equipo1 FROM ganadores_octavos WHERE id = 8),2,'POR DEFINIR');
     
     
-    TRUNCATE ganadores_octavos;-- SELECT * FROM partido WHERE tipo_partido_id=2
+    TRUNCATE ganadores_octavos;-- SELECT * FROM partido WHERE tipo_partido_id=3
 								-- DELETE FROM partido WHERE tipo_partido_id > 1
     
  END$$
 DELIMITER ;
 
+-- CALL generar_octavos() CALL generar_cuartos()
+
 DELIMITER $$
 CREATE PROCEDURE generar_cuartos ()-- DROP PROCEDURE generar_cuartos 
 BEGIN
-    
+	DECLARE equipo_aux INT;
 	CREATE TEMPORARY TABLE IF NOT EXISTS tmp_sort(
 		id INT AUTO_INCREMENT DEFAULT NULL,
         id_equipo INT,
         PRIMARY KEY(id)
     );
     
-    INSERT INTO tmp_sort(id_equipo) SELECT determinarQuienAvanza (equipo_visita_fk, equipo_local_fk,1) FROM octavos_de_final ORDER BY id ASC;
+    INSERT INTO tmp_sort(id_equipo) SELECT determinarQuienAvanza (equipo_visita_fk, equipo_local_fk,2) FROM octavos_de_final ORDER BY id ASC;
     
-    SELECT * FROM tmp_sort;
-		
-	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 2),(SELECT id_equipo FROM tmp_sort WHERE id = 1),3,'POR DEFINIR');
-	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 4),(SELECT id_equipo FROM tmp_sort WHERE id = 3),3,'POR DEFINIR');
-	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 6),(SELECT id_equipo FROM tmp_sort WHERE id = 5),3,'POR DEFINIR');
-	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 8),(SELECT id_equipo FROM tmp_sort WHERE id = 7),3,'POR DEFINIR');
+    SET equipo_aux = (SELECT id_equipo FROM tmp_sort WHERE id = 1);
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 2),equipo_aux,3,'POR DEFINIR');
+    SET equipo_aux = (SELECT id_equipo FROM tmp_sort WHERE id = 3);
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 4),equipo_aux,3,'POR DEFINIR');
+    SET equipo_aux = (SELECT id_equipo FROM tmp_sort WHERE id = 5);
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 6),equipo_aux,3,'POR DEFINIR');
+    SET equipo_aux = (SELECT id_equipo FROM tmp_sort WHERE id = 7);
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM tmp_sort WHERE id = 8),equipo_aux,3,'POR DEFINIR');
     
-    DROP TABLE tmp_sort;
+    TRUNCATE tmp_sort;
    
  END$$
-DELIMITER ;-- CALL generar_cuartos();
+DELIMITER ;-- CALL generar_cuartos SELECT * FROM partido where id = 3
 
 DELIMITER $$
 CREATE PROCEDURE generar_semi ()-- DROP PROCEDURE generar_semi
 BEGIN
+    DECLARE equipo_aux INT;
     
 	CREATE TABLE IF NOT EXISTS ganadores(
 		id INT AUTO_INCREMENT DEFAULT NULL,
@@ -424,34 +434,52 @@ BEGIN
         PRIMARY KEY(id)
     );
     
-    INSERT INTO ganadores(id_equipo) SELECT ((SELECT determinarQuienAvanza (equipo_visita_fk, equipo_local_fk,3))) FROM partido WHERE tipo_partido_id = 3 ORDER BY id ASC;
-		
-	INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo FROM ganadores WHERE id = 2),(SELECT id_equipo FROM ganadores WHERE id = 1),4,'POR DEFINIR');
-	INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo FROM ganadores WHERE id = 4),(SELECT id_equipo FROM ganadores WHERE id = 3),4,'POR DEFINIR');
+    INSERT INTO ganadores(id_equipo) SELECT determinarQuienAvanza (equipo_visita_fk, equipo_local_fk,3) FROM cuartos_de_final ORDER BY id ASC;
     
-    DROP TABLE ganadores;
+    SET equipo_aux = (SELECT id_equipo FROM ganadores WHERE id = 1);
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM ganadores WHERE id = 2),equipo_aux,4,'POR DEFINIR');
+    SET equipo_aux = (SELECT id_equipo FROM ganadores WHERE id = 3);
+	INSERT INTO partido VALUES (NULL,CURDATE(),(SELECT id_equipo FROM ganadores WHERE id = 4),equipo_aux,4,'POR DEFINIR');
+    
+	TRUNCATE ganadores;
    
  END$$
-DELIMITER ;
+DELIMITER ;-- CALL generar_semi
+-- SELECT * FROM partido where tipo_partido_id = 4
+-- SELECT * FROM semi_final
 
 DELIMITER $$
 CREATE PROCEDURE generar_final ()-- DROP PROCEDURE generar_final
 BEGIN
+    DECLARE finalista1 INT;
+    DECLARE finalista2 INT;
+    DECLARE tercero1 INT;
+    DECLARE tercero2 INT;
     
-	CREATE TABLE IF NOT EXISTS ganadores(
-		id INT AUTO_INCREMENT DEFAULT NULL,
-        id_equipo INT,
-        PRIMARY KEY(id)
-    );
+    SET finalista1 = (SELECT determinarQuienAvanza(equipo_visita_fk, equipo_local_fk,tipo_partido_id) FROM semi_final LIMIT 0,1);
     
-    INSERT INTO ganadores(id_equipo) SELECT ((SELECT determinarQuienAvanza (equipo_visita_fk, equipo_local_fk,4))) FROM partido WHERE tipo_partido_id = 4 ORDER BY id ASC;
-		
-	INSERT INTO partido VALUES (CURDATE(),(SELECT id_equipo FROM ganadores WHERE id = 2),(SELECT id_equipo FROM ganadores WHERE id = 1),5,'POR DEFINIR');
+    IF(finalista1 != (SELECT equipo_visita_fk FROM semi_final LIMIT 0,1)) THEN
+		SET tercero1 = (SELECT equipo_visita_fk FROM semi_final LIMIT 0,1);
+    ELSE
+		SET tercero1 = (SELECT equipo_local_fk FROM semi_final LIMIT 0,1);
+    END IF;
     
-    DROP TABLE ganadores;
+	SET finalista2 = (SELECT determinarQuienAvanza(equipo_visita_fk, equipo_local_fk,tipo_partido_id) FROM semi_final LIMIT 1,1);
+    
+    IF(finalista2 != (SELECT equipo_visita_fk FROM semi_final LIMIT 1,1)) THEN
+		SET tercero2 = (SELECT equipo_visita_fk FROM semi_final LIMIT 1,1);
+    ELSE
+		SET tercero2 = (SELECT equipo_local_fk FROM semi_final LIMIT 1,1);
+    END IF;
+    
+    
+	INSERT INTO partido VALUES (NULL,CURDATE(),finalista1,finalista2,5,'POR DEFINIR');
+    INSERT INTO partido VALUES (NULL,CURDATE(),tercero1,tercero2,5,'POR DEFINIR');
    
  END$$
-DELIMITER ;
+DELIMITER ;-- SELECT * From semi_final limit 0,1
+-- SELECT * FROM partido WHERE tipo_partido_id = 4
+-- DELETE FROM partido WHERE tipo_partido_id = 4
 
 DELIMITER $$
 CREATE PROCEDURE generar_campeon ()-- DROP PROCEDURE generar_campeon

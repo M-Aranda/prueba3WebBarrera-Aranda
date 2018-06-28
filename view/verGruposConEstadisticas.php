@@ -71,9 +71,14 @@
     </ul>
   </div>
 </nav>
-<h4 class="card-title">Estadisticas de grupos</h4>
+    <br>
+    <br>
+    <br>
 <div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
-<div class="card-body">
+      <div class="card-header">
+      <h3>Estadisticas Grupos</h3>
+      </div>
+      <div class="card-body">
 
 
 <table border=default>

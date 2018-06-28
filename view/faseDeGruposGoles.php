@@ -75,8 +75,11 @@
     <br>
     <br>
 
-
-<h4 class="card-title">Ingreso de goles</h4>
+<div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
+      <div class="card-header">
+      <h3>Ingreso de Goles Grupos</h3>
+      </div>
+      <div class="card-body">
 
 
 

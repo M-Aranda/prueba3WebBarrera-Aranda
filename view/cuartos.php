@@ -74,29 +74,26 @@
     <br>
     <br>
     <br>
-
-
-<h4 class="card-title">Ingreso de goles</h4>
+    <div class="card text-center" style="margin-left: 20%; margin-right: 20%;" >
+      <div class="card-header">
+      <h3>Cuartos de Final</h3>
+      </div>
+      <div class="card-body">
 
 
 
 <?php
 
 require_once("../model/Data.php");
-require_once("../model/VersusFaseDeGrupo.php");
+require_once("../model/VersusFaseFinal.php");
+
 $d=new Data();
 
 
-$idsDeGrupos=array(1, 2, 3, 4);
-
-
-
-
-foreach ($idsDeGrupos as $n) {
     $versus=$d->getVersusCuartos();
 
 
-    echo '<form action="../controller/controladorActualizarStatsDespuesDeFaseDeGrupos.php" method="post">';
+    echo '<form action="../controller/eliminacionCuartos.php" method="post">';
 
     echo "<table border=default align=center>";
     echo "<tr>";
@@ -109,11 +106,11 @@ foreach ($idsDeGrupos as $n) {
 
         foreach ($versus as $v) {
 
-            echo '<td><input type="text" name="goles['.$v->getNombreVisita().",".$v->getId().']" placeholder="goles visitante" /></td>';
+            echo '<td><input type="text" name="v'.$v->getId().'" placeholder="goles visitante" /></td>';
             echo "<td><img src=".$v->getInsigniaVisita()."> &#160".$v->getNombreVisita()."</td>";
             echo "<td>VS</td>";
             echo "<td><img src=".$v->getInsigniaLocal()."> &#160".$v->getNombreLocal()."</td>";
-            echo '<td><input type="text" name="goles['.$v->getNombreLocal().",".$v->getId().']"  placeholder="goles local"  /></td>';
+            echo '<td><input type="text" name="l'.$v->getId().'"  placeholder="goles local"  /></td>';
             echo "</tr></tr>";
         
 
@@ -125,15 +122,14 @@ foreach ($idsDeGrupos as $n) {
 
 
 
-}
-
-
-
 
 ?>
 
-<input type="submit" value="Listo" align:center>
+<input type="submit" value="Listo">
 </form>
+</div>
+</div>
+</div>
 
 
     
